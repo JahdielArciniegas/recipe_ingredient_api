@@ -3,7 +3,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es2023",
-    "types": [],
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
