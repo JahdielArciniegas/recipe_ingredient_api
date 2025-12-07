@@ -1,7 +1,7 @@
 import { createUser, getOneUser } from "../repositories/user.repositories.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config/dotenv";
+import { JWT_SECRET } from "../config/dotenv.js";
 
 const login = async (email: string, password: string) => {
   const user = await getOneUser(email);

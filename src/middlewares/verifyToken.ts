@@ -1,7 +1,7 @@
 import type { NextFunction, Response } from "express";
 import type { AuthRequest } from "../types/express";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config/dotenv";
+import { JWT_SECRET } from "../config/dotenv.js";
 
 export const verifyToken = (
   req: AuthRequest,
