@@ -1,5 +1,5 @@
-import { DATABASE_URL } from "../config/dotenv";
-import { PrismaClient } from "../generated/prisma/client";
+import { DATABASE_URL } from "../config/dotenv.js";
+import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 const connectionString = `${DATABASE_URL}`;
