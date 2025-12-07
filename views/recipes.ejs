@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recetas</title>
+  <style>
+    body { font-family: Arial; padding: 30px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    td, th { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    form { margin-bottom: 30px; }
+    button { cursor: pointer; }
+    .ing-row { margin-bottom: 10px; display: flex; gap: 10px; }
+    .ing-row select, .ing-row input { flex: 1; }
+  </style>
+</head>
+<body>
+
+<h1>Recetas</h1>
+
+<!-- CREAR RECETA -->
+<form id="createRecipeForm">
+  <h2>Crear receta</h2>
+
+  <input name="name" type="text" placeholder="Nombre" required />
+  <textarea name="description" placeholder="Descripción" required></textarea>
+
+  <h3>Ingredientes</h3>
+
+  <div id="createIngredientsContainer"></div>
+  <button type="button" id="addIngBtn">Agregar ingrediente</button>
+
+  <br><br>
+  <button type="submit">Crear receta</button>
+  <p id="createMsg"></p>
+</form>
+
+<!-- LISTADO DE RECETAS -->
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Ingredientes</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+
+  <% if (recipes.length === 0) { %>
+    <tr>
+      <td colspan="5">No hay recetas</td>
+    </tr>
+  <% } else { %>
+    <tbody id="recipesTable">
+      <% recipes.forEach(r => { %>
+        <tr data-id="<%= r.id %>">
+          <td><%= r.name %></td>
+          <td><%= r.description %></td>
+          <td>
+            <ul>
+              <% r.ingredients.forEach(i => { %>
+                <li>
+                  <%= i.ingredient.name %> — <%= i.amount %><%= i.unit %> ($<%= i.price %>)
+                </li>
+              <% }) %>
+            </ul>
+          </td>
+          <td>
+            <button class="viewBtn">Ver</button>
+            <button class="editBtn">Editar</button>
+            <button class="deleteBtn">Eliminar</button>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  <% } %>
+</table>
+
+
+<!-- MODAL EDITAR RECETA -->
+<div id="editModal" style="
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:#0007; justify-content:center; align-items:center;">
+  
+  <div style="background:white; padding:20px; width:400px;">
+    <h2>Editar receta</h2>
+
+    <form id="editRecipeForm">
+      <input id="editName" type="text" placeholder="Nombre" required />
+      <textarea id="editDescription" placeholder="Descripción" required></textarea>
+
+      <h3>Ingredientes</h3>
+      <div id="editIngredientsContainer"></div>
+      <button type="button" id="editAddIngBtn">Agregar ingrediente</button>
+
+      <br><br>
+      <button type="submit">Guardar</button>
+    </form>
+
+    <button id="closeModal">Cerrar</button>
+    <p id="editMsg"></p>
+  </div>
+</div>
+
+<script>
+  const ING_LIST = <%- JSON.stringify(ingredients) %>;
+  let currentEditId = null;
+
+  // --------------------------
+  // FUNCION PARA GENERAR INPUTS DE INGREDIENTES
+  // --------------------------
+  function ingredientRow(data = {}) {
+    return `
+      <div class="ing-row">
+        <select class="ing-id">
+          ${ING_LIST.map(i =>
+            `<option value="${i.id}" ${data.id === i.id ? "selected" : ""}>${i.name}</option>`
+          ).join("")}
+        </select>
+        <input class="ing-amount" type="number" step="0.01" placeholder="Cantidad" value="${data.amount || ""}">
+        <input class="ing-unit" type="text" placeholder="Unidad" value="${data.unit || ""}">
+      </div>
+    `;
+  }
+
+  // --------------------------
+  // CREAR RECETA
+  // --------------------------
+  document.getElementById("addIngBtn").onclick = () => {
+    document.getElementById("createIngredientsContainer")
+      .insertAdjacentHTML("beforeend", ingredientRow());
+  };
+
+  document.getElementById("createRecipeForm").onsubmit = async (e) => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+
+    const ingRows = [...document.querySelectorAll("#createIngredientsContainer .ing-row")];
+    const ingredients = ingRows.map(r => ({
+      id: r.querySelector(".ing-id").value,
+      amount: Number(r.querySelector(".ing-amount").value),
+      unit: r.querySelector(".ing-unit").value
+    }));
+
+    const res = await fetch("/recipes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: form.get("name"),
+        description: form.get("description"),
+        ingredients
+      })
+    });
+
+    const data = await res.json();
+    document.getElementById("createMsg").textContent = data.message;
+
+    if (res.ok) location.reload();
+  };
+
+  // --------------------------
+  // ELIMINAR RECETA
+  // --------------------------
+  document.querySelectorAll(".deleteBtn").forEach(btn => {
+    btn.onclick = async (e) => {
+      const tr = e.target.closest("tr");
+      const id = tr.dataset.id;
+
+      const res = await fetch(`/recipes/${id}`, { method: "DELETE" });
+      if (res.ok) location.reload();
+    };
+  });
+
+  // --------------------------
+  // VER RECETA
+  // --------------------------
+  document.querySelectorAll(".viewBtn").forEach(btn => {
+    btn.onclick = (e) => {
+      const tr = e.target.closest("tr");
+      const id = tr.dataset.id;
+      window.location.href = `/view/recipes/${id}`;
+    };
+  });
+
+  // --------------------------
+  // ABRIR MODAL EDICIÓN
+  // --------------------------
+  document.querySelectorAll(".editBtn").forEach(btn => {
+    btn.onclick = (e) => {
+      const tr = e.target.closest("tr");
+      currentEditId = tr.dataset.id;
+
+      const name = tr.children[0].textContent;
+      const desc = tr.children[1].textContent;
+
+      document.getElementById("editName").value = name;
+      document.getElementById("editDescription").value = desc;
+
+      // Limpiar ingredientes
+      const container = document.getElementById("editIngredientsContainer");
+      container.innerHTML = "";
+
+      // Buscar receta completa en el dataset generado por la vista
+      const recipe = <%- JSON.stringify(recipes) %>.find(r => r.id === currentEditId);
+
+      recipe.ingredients.forEach(i => {
+        container.insertAdjacentHTML("beforeend", ingredientRow({
+          id: i.ingredientId,
+          amount: i.amount,
+          price: i.price,
+          unit: i.unit
+        }));
+      });
+
+      document.getElementById("editModal").style.display = "flex";
+    };
+  });
+
+  document.getElementById("closeModal").onclick = () => {
+    document.getElementById("editModal").style.display = "none";
+  };
+
+  // --------------------------
+  // GUARDAR EDICIÓN
+  // --------------------------
+  document.getElementById("editRecipeForm").onsubmit = async (e) => {
+    e.preventDefault();
+
+    const ingRows = [...document.querySelectorAll("#editIngredientsContainer .ing-row")];
+    const ingredients = ingRows.map(r => ({
+      id: r.querySelector(".ing-id").value,
+      amount: Number(r.querySelector(".ing-amount").value),
+      price: Number(r.querySelector(".ing-price").value),
+      unit: r.querySelector(".ing-unit").value
+    }));
+
+    const res = await fetch(`/recipes/${currentEditId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: document.getElementById("editName").value,
+        description: document.getElementById("editDescription").value,
+        ingredients
+      })
+    });
+
+    const data = await res.json();
+    document.getElementById("editMsg").textContent = data.message;
+
+    if (res.ok) location.reload();
+  };
+</script>
+
+</body>
+</html>

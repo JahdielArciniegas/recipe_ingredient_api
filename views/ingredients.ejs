@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ingredientes</title>
+  <style>
+    body { font-family: Arial; padding: 30px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    td, th { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    form { margin-bottom: 30px; }
+    button { cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<h1>Ingredientes</h1>
+
+<!-- CREAR INGREDIENTE -->
+<form id="createIngredientForm">
+  <h2>Crear ingrediente</h2>
+  <input name="name" type="text" placeholder="Nombre" required />
+  <select name="unit" required>
+    <option value="g">g</option>
+    <option value="ml">ml</option>
+    <option value="unidad">unidad</option>
+  </select>
+  <input name="price" type="text" placeholder="Precio" required />
+  <input name="amount" type="text" placeholder="Cantidad" required />
+  <button type="submit">Crear</button>
+  <p id="createMsg"></p>
+</form>
+
+<!-- LISTADO DE INGREDIENTES -->
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Unidad</th>
+      <th>Cantidad</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <% if ( ingredients.length === 0) { %>
+    <tr>
+      <td colspan="5">No hay ingredientes</td>
+    </tr>
+  <% } else { %>
+    <tbody id="ingredientsTable">
+    <% ingredients.forEach(i => { %>
+      <tr data-id="<%= i.id %>">
+        <td><%= i.name %></td>
+        <td><%= i.price %></td>
+        <td><%= i.unit %></td>
+        <td><%= i.amount %></td>
+        <td>
+          <button class="editBtn">Editar</button>
+          <button class="deleteBtn">Eliminar</button>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+  <% } %>
+</table>
+
+
+<!-- MODAL EDITAR INGREDIENTE -->
+<div id="editModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#0007; justify-content:center; align-items:center;">
+  <div style="background:white; padding:20px; width:300px;">
+    <h2>Editar ingrediente</h2>
+    <form id="editIngredientForm">
+      <input name="name" id="editName" type="text" placeholder="Nombre" required />
+      <select name="unit" id="editUnit" required>
+        <option value="g">g</option>
+        <option value="ml">ml</option>
+        <option value="unidad">unidad</option>
+      </select>
+      <input name="price" id="editPrice" type="text" placeholder="Precio" required />
+      <input name="amount" id="editAmount" type="text" placeholder="Cantidad" required />
+      <button type="submit">Guardar</button>
+    </form>
+    <button id="closeModal">Cerrar</button>
+    <p id="editMsg"></p>
+  </div>
+</div>
+
+<script>
+  // ---------- CREAR ----------
+  const createForm = document.getElementById('createIngredientForm');
+  createForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(createForm);
+
+    const res = await fetch('/ingredients', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: formData.get('name'),
+        unit: formData.get('unit'),
+        price: Number(formData.get('price')),
+        amount: Number(formData.get('amount')),
+      }),
+    });
+
+    const data = await res.json();
+    document.getElementById('createMsg').textContent = data.message;
+    if (res.ok) location.reload();
+  });
+
+  // ---------- ELIMINAR ----------
+  document.querySelectorAll('.deleteBtn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const tr = e.target.closest('tr');
+      const id = tr.getAttribute('data-id');
+
+      const res = await fetch(`/ingredients/${id}`, { method: 'DELETE' });
+      if (res.ok) location.reload();
+    });
+  });
+
+  // ---------- EDITAR (ABRIR MODAL) ----------
+  let currentEditId = null;
+  const editModal = document.getElementById('editModal');
+  document.querySelectorAll('.editBtn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const tr = e.target.closest('tr');
+      currentEditId = tr.getAttribute('data-id');
+      const name = tr.children[0].textContent;
+      const price = tr.children[1].textContent;
+      const unit = tr.children[2].textContent;
+      const amount = tr.children[3].textContent;
+      editModal.style.display = 'flex';
+      
+      const nameForm = document.getElementById('editName');
+      const priceForm = document.getElementById('editPrice');
+      const unitForm = document.getElementById('editUnit');
+      const amountForm = document.getElementById('editAmount');
+      nameForm.value = name;
+      priceForm.value = price;
+      unitForm.value = unit;
+      amountForm.value = amount;
+    });
+  });
+
+  document.getElementById('closeModal').addEventListener('click', () => {
+    editModal.style.display = 'none';
+  });
+
+  // ---------- GUARDAR EDICIÓN ----------
+  const editForm = document.getElementById('editIngredientForm');
+  editForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(editForm);
+    console.log(currentEditId)
+    const res = await fetch(`/ingredients/${currentEditId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: formData.get('name'),
+        unit: formData.get('unit'),
+        price: Number(formData.get('price')),
+        amount: Number(formData.get('amount')),
+      }),
+    });
+
+    const data = await res.json();
+    document.getElementById('editMsg').textContent = data.message;
+
+    if (res.ok) location.reload();
+  });
+</script>
+
+</body>
+</html>
+*/
