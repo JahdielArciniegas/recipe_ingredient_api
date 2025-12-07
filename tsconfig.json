@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "target": "es2023",
     "types": ["node", "express"],
     "typeRoots": ["./src/types", "./node_modules/@types"],
