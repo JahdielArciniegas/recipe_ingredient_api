@@ -1,7 +1,7 @@
 import type { NextFunction, Response } from "express";
 import type { AuthRequest } from "../types/express";
-import { recipeService } from "../services/recipes";
-import { InternalServerError } from "../middlewares/handleError";
+import { recipeService } from "../services/recipes.js";
+import { InternalServerError } from "../middlewares/handleError.js";
 
 const createRecipe = async (
   req: AuthRequest,

@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import { authService } from "../services/auth";
-import { InternalServerError } from "../middlewares/handleError";
+import { authService } from "../services/auth.js";
+import { InternalServerError } from "../middlewares/handleError.js";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {

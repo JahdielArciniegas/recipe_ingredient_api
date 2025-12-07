@@ -1,8 +1,8 @@
 import express from "express";
 const authRouter = express.Router();
-import { authController } from "../controllers/auth.controllers";
-import { validate } from "../middlewares/validateData";
-import { userSchermaRegister, userSchermaLogin } from "../models/userSchema";
+import { authController } from "../controllers/auth.controllers.js";
+import { validate } from "../middlewares/validateData.js";
+import { userSchermaRegister, userSchermaLogin } from "../models/userSchema.js";
 
 authRouter.post(
   "/register",

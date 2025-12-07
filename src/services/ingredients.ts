@@ -3,7 +3,7 @@ import {
   getAllIngredients,
   updateIngredient,
   deleteIngredient,
-} from "../repositories/ingredients.repositories";
+} from "../repositories/ingredients.repositories.js";
 
 const create = async (
   name: string,

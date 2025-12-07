@@ -4,7 +4,7 @@ import {
   getAllRecipes,
   getOneRecipe,
   updateRecipe,
-} from "../repositories/recipe.repositories";
+} from "../repositories/recipe.repositories.js";
 
 const create = async (
   name: string,
