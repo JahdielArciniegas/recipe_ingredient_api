@@ -1,14 +1,16 @@
-import type { NextFunction, Request, Response } from "express";
+import type { NextFunction, Response } from "express";
+import type { AuthRequest } from "../types/express";
 import { ingredientService } from "../services/ingredients";
 import { InternalServerError } from "../middlewares/handleError";
 
 const createRecipe = async (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const user = req.user;
+    if (!user) throw new Error("User is required");
     const { name, price, unit, amount } = req.body;
     const recipe = await ingredientService.create(
       name,
@@ -26,12 +28,13 @@ const createRecipe = async (
 };
 
 const getAllIngredients = async (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const user = req.user;
+    if (!user) throw new Error("User is required");
     const ingredients = await ingredientService.getAll(user.id);
     res.status(200).json(ingredients);
   } catch (error) {
@@ -41,28 +44,14 @@ const getAllIngredients = async (
   }
 };
 
-const getOneIngredient = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const user = req.user;
-    const { ingredientId } = req.body;
-    const ingredient = await ingredientService.getOne(user.id, ingredientId);
-    res.status(200).json(ingredient);
-  } catch (error) {
-    next(new InternalServerError("Internal server error, No ingredient found"));
-  }
-};
-
 const updateIngredient = async (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const user = req.user;
+    if (!user) throw new Error("User is required");
     const { id } = req.params;
     const { name, price, unit, amount } = req.body;
     const ingredient = await ingredientService.update(
@@ -82,12 +71,13 @@ const updateIngredient = async (
 };
 
 const deleteIngredient = async (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const user = req.user;
+    if (!user) throw new Error("User is required");
     const { id } = req.params;
     const ingredient = await ingredientService.remove(user.id, id);
     res.status(200).json(ingredient);
@@ -101,7 +91,6 @@ const deleteIngredient = async (
 export const ingredientController = {
   createRecipe,
   getAllIngredients,
-  getOneIngredient,
   updateIngredient,
   deleteIngredient,
 };
