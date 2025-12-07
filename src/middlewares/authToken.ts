@@ -1,9 +1,14 @@
-import type { NextFunction, Request, Response } from "express";
+import type { NextFunction, Response } from "express";
+import type { AuthRequest } from "../types/express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/dotenv";
-import { InternalServerError, UnauthorizedError } from "./handleError";
+import { InternalServerError } from "./handleError";
 
-export const authToken = (req: Request, res: Response, next: NextFunction) => {
+export const authToken = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const token = req.cookies.accessToken;
   if (!token) {
     req.user = null;
