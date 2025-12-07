@@ -12,7 +12,6 @@ ingredientRouter.post(
   ingredientController.createRecipe
 );
 ingredientRouter.get("/", authToken, ingredientController.getAllIngredients);
-ingredientRouter.get("/:id", authToken, ingredientController.getOneIngredient);
 ingredientRouter.put(
   "/:id",
   verifyToken,
