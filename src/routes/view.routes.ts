@@ -1,9 +1,9 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../types/express";
 import express from "express";
-import { authToken } from "../middlewares/authToken";
-import { ingredientService } from "../services/ingredients";
-import { recipeService } from "../services/recipes";
+import { authToken } from "../middlewares/authToken.js";
+import { ingredientService } from "../services/ingredients.js";
+import { recipeService } from "../services/recipes.js";
 const viewRouter = express.Router();
 
 viewRouter.get("/", authToken, (req: AuthRequest, res: Response) => {

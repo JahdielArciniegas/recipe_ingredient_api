@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { ingredientController } from "../controllers/ingredients.controllers";
-import { verifyToken } from "../middlewares/verifyToken";
-import { authToken } from "../middlewares/authToken";
-import { validate } from "../middlewares/validateData";
-import { ingredientSchema } from "../models/ingredientSchema";
+import { ingredientController } from "../controllers/ingredients.controllers.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
+import { authToken } from "../middlewares/authToken.js";
+import { validate } from "../middlewares/validateData.js";
+import { ingredientSchema } from "../models/ingredientSchema.js";
 const ingredientRouter = Router();
 ingredientRouter.post(
   "/",

@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { recipeController } from "../controllers/recipe.controllers";
-import { verifyToken } from "../middlewares/verifyToken";
-import { authToken } from "../middlewares/authToken";
-import { validate } from "../middlewares/validateData";
-import { recipeSchema } from "../models/recipeSchema";
+import { recipeController } from "../controllers/recipe.controllers.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
+import { authToken } from "../middlewares/authToken.js";
+import { validate } from "../middlewares/validateData.js";
+import { recipeSchema } from "../models/recipeSchema.js";
 
 const recipeRouter = Router();
 

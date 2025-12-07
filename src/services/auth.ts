@@ -1,4 +1,4 @@
-import { createUser, getOneUser } from "../repositories/user.repositories";
+import { createUser, getOneUser } from "../repositories/user.repositories.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/dotenv";
