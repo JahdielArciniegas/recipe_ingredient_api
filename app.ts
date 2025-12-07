@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
-import authRouter from "./src/routes/auth.routes";
-import ingredientRouter from "./src/routes/ingredients.routes";
-import recipeRouter from "./src/routes/recipe.routes";
+import authRouter from "./src/routes/auth.routes.js";
+import ingredientRouter from "./src/routes/ingredients.routes.js";
+import recipeRouter from "./src/routes/recipe.routes.js";
 import cookieParser from "cookie-parser";
-import viewRouter from "./src/routes/view.routes";
-import rateLimit from "./src/middlewares/rateLimit";
+import viewRouter from "./src/routes/view.routes.js";
+import rateLimit from "./src/middlewares/rateLimit.js";
 import swaggerUi from "swagger-ui-express";
 const { default: swaggerDocument } = await import("./swagger.json", {
   with: {
