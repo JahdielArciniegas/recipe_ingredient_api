@@ -1,0 +1,56 @@
+###
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "username": "Jahdiel",
+    "email": "jahdiel@gmail.com",
+    "password": "123456"
+}
+###
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "jahdiel@gmail.com",
+    "password": "123456"
+}
+###
+
+POST http://localhost:3000/ingredients
+Content-Type: application/json
+
+{
+    "name": "harina",
+    "price": 4.5,
+    "unit": "g",
+    "amount": 1000
+}
+
+###
+POST http://localhost:3000/recipes
+Content-Type: application/json
+
+{
+    "name": "Torta de zanahoria",
+    "description": "Deliciosa torta de zanahoria con bastante harina jajajaj",
+    "price": 10,
+    "userEmail": "jahdiel@gmail.com",
+    "ingredients": [
+        {
+            "id": "cmilqibeb00005cth8f1fgwr3",
+            "amount": 2,
+            "price": 4.5,
+            "unit": "g"
+        },
+        {
+            "id": "cmikgxbao0000owthva69x6tp",
+            "amount": 0.5,
+            "price": 2.5,
+            "unit": "g"
+        }
+
+    ]
+}
+

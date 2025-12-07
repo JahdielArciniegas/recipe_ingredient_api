@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title><%= recipe.name %></title>
+</head>
+<body>
+    <h1>Receta: <%= recipe.name %></h1>
+
+    <p><strong>Descripción:</strong> <%= recipe.description %></p>
+    <p><strong>Precio:</strong> $<%= recipe.priceRecipe %></p>
+
+    <h2>Ingredientes usados</h2>
+    <ul>
+        <% recipe.ingredients.forEach(i => { %>
+            <li>
+                <strong><%= i.ingredient.name %></strong> — 
+                Cantidad: <%= i.amount %> <%= i.unit %> — 
+                Precio: $<%= i.ingredient.price %>
+            </li>
+        <% }) %>
+    </ul>
+
+    <hr>
+
+    <!-- FORMULARIO PARA EDITAR LA RECETA -->
+
+    <!-- ELIMINAR RECETA -->
+    </script>
+
+</body>
+</html>
