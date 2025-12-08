@@ -5,23 +5,22 @@ import {
   getOneRecipe,
   updateRecipe,
 } from "../repositories/recipe.repositories.js";
+import type { RecipeRegister, RecipeUpdate } from "../types/recipe.js";
 
-const create = async (
-  name: string,
-  description: string,
-  userId: string,
-  ingredients: [
-    {
-      id: string;
-      amount: number;
-      unit: string;
-    }
-  ]
-) => {
-  // console.log(name, description, userId, ingredients);
-  if (!name || !description || !userId || !ingredients)
+const create = async (recipeData: RecipeRegister) => {
+  if (
+    !recipeData.name ||
+    !recipeData.description ||
+    !recipeData.userId ||
+    !recipeData.ingredients
+  )
     throw new Error("Name, description, userId, and ingredients are required");
-  return await createRecipe(name, description, userId, ingredients);
+  return await createRecipe(
+    recipeData.name,
+    recipeData.description,
+    recipeData.userId,
+    recipeData.ingredients
+  );
 };
 
 const get = async (userId: string) => {
@@ -32,15 +31,7 @@ const getOne = async (userId: string, recipeId: string) => {
   return await getOneRecipe(userId, recipeId);
 };
 
-const update = async (
-  userId: string,
-  recipeId: string,
-  data: {
-    name: string;
-    description: string;
-    ingredients: [{ id: string; amount: number; unit: string }];
-  }
-) => {
+const update = async (userId: string, recipeId: string, data: RecipeUpdate) => {
   if (!userId || !recipeId || !data)
     throw new Error("userId, recipeId, and data are required");
   return await updateRecipe(userId, recipeId, data);

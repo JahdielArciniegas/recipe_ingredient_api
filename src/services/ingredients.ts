@@ -4,17 +4,27 @@ import {
   updateIngredient,
   deleteIngredient,
 } from "../repositories/ingredients.repositories.js";
+import type {
+  IngredientRegister,
+  IngredientUpdate,
+} from "../types/ingredients.js";
 
-const create = async (
-  name: string,
-  price: number,
-  unit: string,
-  amount: number,
-  userId: string
-) => {
-  if (!name || price == null || !unit || amount == null || !userId)
+const create = async (ingredientData: IngredientRegister) => {
+  if (
+    !ingredientData.name ||
+    ingredientData.price == null ||
+    !ingredientData.unit ||
+    ingredientData.amount == null ||
+    !ingredientData.userId
+  )
     throw new Error("Name, price, unit, amount, and userId are required");
-  const ingredient = await createIngredient(name, price, unit, amount, userId);
+  const ingredient = await createIngredient(
+    ingredientData.name,
+    ingredientData.price,
+    ingredientData.unit,
+    ingredientData.amount,
+    ingredientData.userId
+  );
   return ingredient;
 };
 
@@ -25,27 +35,29 @@ const getAll = async (userId: string) => {
 
 const update = async (
   userId: string,
-  ingredientId: string | undefined,
-  name: string,
-  price: number,
-  unit: string,
-  amount: number
+  ingredientId: string,
+  ingredientData: IngredientUpdate
 ) => {
   if (!ingredientId) throw new Error("No ingredient id");
-  if (!ingredientId || !name || price == null || !unit || amount == null)
+  if (
+    !ingredientData.name ||
+    ingredientData.price == null ||
+    !ingredientData.unit ||
+    ingredientData.amount == null
+  )
     throw new Error(
       "Ingredient id, name, price, unit, and amount are required"
     );
-  const ingredientData = {
-    name,
-    price,
-    unit,
-    amount,
+  const updateIngredientData = {
+    name: ingredientData.name,
+    price: ingredientData.price,
+    unit: ingredientData.unit,
+    amount: ingredientData.amount,
   };
   const ingredient = await updateIngredient(
     userId,
     ingredientId,
-    ingredientData
+    updateIngredientData
   );
   return ingredient;
 };
