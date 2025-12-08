@@ -1,16 +1,12 @@
 import prisma from "../lib/prisma.js";
+import type { IngredientRecipe } from "../types/ingredients.js";
+import type { RecipeUpdate } from "../types/recipe.js";
 
 export async function createRecipe(
   name: string,
   description: string,
   userId: string,
-  ingredients: [
-    {
-      id: string;
-      amount: number;
-      unit: string;
-    }
-  ]
+  ingredients: IngredientRecipe[]
 ) {
   return prisma.$transaction(async (tx) => {
     const recipe = await tx.recipe.create({
@@ -99,17 +95,7 @@ export const deleteRecipe = async (userId: string, recipeId: string) => {
 export const updateRecipe = async (
   userId: string,
   recipeId: string,
-  data: {
-    name: string;
-    description: string;
-    ingredients: [
-      {
-        id: string;
-        amount: number;
-        unit: string;
-      }
-    ];
-  }
+  data: RecipeUpdate
 ) => {
   prisma.$transaction(async (tx) => {
     const recipe = await tx.recipe.update({

@@ -12,13 +12,13 @@ const createRecipe = async (
     const user = req.user;
     if (!user) throw new Error("User is required");
     const { name, price, unit, amount } = req.body;
-    const recipe = await ingredientService.create(
+    const recipe = await ingredientService.create({
       name,
       price,
       unit,
       amount,
-      user.id
-    );
+      userId: user.id,
+    });
     res.status(201).json(recipe);
   } catch (error) {
     next(
@@ -53,15 +53,14 @@ const updateIngredient = async (
     const user = req.user;
     if (!user) throw new Error("User is required");
     const { id } = req.params;
+    if (!id) throw new Error("No ingredient id");
     const { name, price, unit, amount } = req.body;
-    const ingredient = await ingredientService.update(
-      user.id,
-      id,
-      name,
-      price,
-      unit,
-      amount
-    );
+    const ingredient = await ingredientService.update(user.id, id, {
+      name: name as string,
+      price: price as number,
+      unit: unit as string,
+      amount: amount as number,
+    });
     res.status(200).json(ingredient);
   } catch (error) {
     next(

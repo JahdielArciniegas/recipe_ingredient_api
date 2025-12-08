@@ -12,12 +12,12 @@ const createRecipe = async (
     if (!req.user) throw new Error("User is required");
     const user = req.user;
     const { name, description, ingredients } = req.body;
-    const recipe = await recipeService.create(
+    const recipe = await recipeService.create({
       name,
       description,
-      user.id,
-      ingredients
-    );
+      userId: user.id,
+      ingredients,
+    });
     res.status(201).json(recipe);
   } catch (error) {
     next(new InternalServerError("Internal server error, No recipe created"));

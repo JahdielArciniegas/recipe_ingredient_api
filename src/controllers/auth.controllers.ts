@@ -1,11 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
 import { authService } from "../services/auth.js";
 import { InternalServerError } from "../middlewares/handleError.js";
-
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
-    const { newUser, token } = await authService.login(email, password);
+    const { newUser, token } = await authService.login({ email, password });
     res
       .cookie("accessToken", token, {
         httpOnly: true,
@@ -22,7 +21,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { username, email, password } = req.body;
-    const user = await authService.register(username, email, password);
+    const user = await authService.register({ username, email, password });
     res.status(201).json(user);
   } catch (error) {
     next(new InternalServerError("Internal server error, No user registered"));
