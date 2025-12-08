@@ -28,7 +28,13 @@ describe("ingredientService", () => {
       userId: "1",
       price: 1,
     } as never);
-    const result = await ingredientService.create("ingredient", 1, "g", 1, "1");
+    const result = await ingredientService.create({
+      name: "ingredient",
+      price: 1,
+      unit: "g",
+      amount: 1,
+      userId: "1",
+    });
     expect(createIngredient).toHaveBeenCalledWith("ingredient", 1, "g", 1, "1");
     expect(result).toEqual({
       id: "1",
@@ -60,14 +66,12 @@ describe("ingredientService", () => {
       userId: "1",
     } as never);
 
-    const result = await ingredientService.update(
-      "1",
-      "1",
-      "ingredient",
-      1,
-      "g",
-      1
-    );
+    const result = await ingredientService.update("1", "1", {
+      name: "ingredient",
+      price: 1,
+      unit: "g",
+      amount: 1,
+    });
     expect(updateIngredient).toHaveBeenCalledWith("1", "1", {
       name: "ingredient",
       price: 1,
@@ -86,7 +90,12 @@ describe("ingredientService", () => {
 
   test("should throw if ingredientID is missing", async () => {
     await expect(
-      ingredientService.update("1", "", "ingredient", 1, "g", 1)
+      ingredientService.update("1", "", {
+        name: "ingredient",
+        price: 1,
+        unit: "g",
+        amount: 1,
+      })
     ).rejects.toThrow("No ingredient id");
   });
 
