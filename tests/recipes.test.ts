@@ -29,12 +29,12 @@ describe("recipeService", () => {
       { id: "ing2", amount: 1, unit: "g" },
     ];
 
-    const result = await recipeService.create(
-      "name",
-      "description",
-      "userId",
-      ingredients as any
-    );
+    const result = await recipeService.create({
+      name: "name",
+      description: "description",
+      userId: "userId",
+      ingredients,
+    });
 
     expect(createRecipe).toHaveBeenCalledWith(
       "name",
@@ -47,7 +47,12 @@ describe("recipeService", () => {
 
   test("should throw if midding params", async () => {
     await expect(
-      recipeService.create("", "description", "userId", [] as any)
+      recipeService.create({
+        name: "",
+        description: "",
+        userId: "",
+        ingredients: [] as any,
+      })
     ).rejects.toThrow(
       "Name, description, userId, and ingredients are required"
     );

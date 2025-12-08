@@ -28,11 +28,11 @@ describe("Register", () => {
       username: "test",
     } as never);
 
-    const result = await authService.register(
-      "test",
-      "test@test.com",
-      "hashed123"
-    );
+    const result = await authService.register({
+      username: "test",
+      email: "test@test.com",
+      password: "hashed123",
+    });
 
     expect(result).toEqual({
       id: "1",
@@ -47,7 +47,11 @@ describe("Register", () => {
     } as never);
 
     await expect(
-      authService.register("test", "test@test.com", "hashed123")
+      authService.register({
+        username: "test",
+        email: "test@test.com",
+        password: "hashed123",
+      })
     ).rejects.toThrow("User already registered");
   });
 });
@@ -63,7 +67,10 @@ describe("login", () => {
     (bcrypt.compare as jest.Mock).mockResolvedValue(true as never);
     (jwt.sign as jest.Mock).mockReturnValue("tokentest");
 
-    const result = await authService.login("test@test.com", "123456");
+    const result = await authService.login({
+      email: "test@test.com",
+      password: "123456",
+    });
 
     expect(getOneUser).toHaveBeenCalledWith("test@test.com");
     expect(bcrypt.compare).toHaveBeenCalledWith("123456", "hashed123");
@@ -80,9 +87,9 @@ describe("login", () => {
 
   test("should throw if user not found", async () => {
     (getOneUser as jest.Mock).mockResolvedValue(null as never);
-    await expect(authService.login("x@test.com", "123")).rejects.toThrow(
-      "User not found"
-    );
+    await expect(
+      authService.login({ email: "x@test.com", password: "123234" })
+    ).rejects.toThrow("User not found");
   });
 
   test("should throw if invalid password", async () => {
@@ -93,8 +100,8 @@ describe("login", () => {
       password: "hashed123",
     } as never);
     (bcrypt.compare as jest.Mock).mockResolvedValue(false as never);
-    await expect(authService.login("test@test.com", "456")).rejects.toThrow(
-      "Invalid password"
-    );
+    await expect(
+      authService.login({ email: "test@test.com", password: "456" })
+    ).rejects.toThrow("Invalid password");
   });
 });
