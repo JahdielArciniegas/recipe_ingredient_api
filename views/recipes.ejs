@@ -143,14 +143,15 @@
       unit: r.querySelector(".ing-unit").value
     }));
 
+    const recipe = {
+      name: form.get("name"),
+      description: form.get("description"),
+      ingredients
+    };
     const res = await fetch("/recipes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: form.get("name"),
-        description: form.get("description"),
-        ingredients
-      })
+      body: JSON.stringify(recipe)
     });
 
     const data = await res.json();
