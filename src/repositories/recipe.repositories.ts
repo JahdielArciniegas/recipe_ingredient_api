@@ -59,7 +59,7 @@ export const getPriceRecipe = async (recipeId: string) => {
   });
 
   return ingredient.reduce((acc, item) => {
-    return acc + item.amount * item.ingredient.price;
+    return acc + (item.amount / item.ingredient.amount) * item.ingredient.price;
   }, 0);
 };
 

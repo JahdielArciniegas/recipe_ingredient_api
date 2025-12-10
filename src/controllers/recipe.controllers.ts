@@ -12,6 +12,7 @@ const createRecipe = async (
     if (!req.user) throw new Error("User is required");
     const user = req.user;
     const { name, description, ingredients } = req.body;
+    console.log(ingredients);
     const recipe = await recipeService.create({
       name,
       description,
