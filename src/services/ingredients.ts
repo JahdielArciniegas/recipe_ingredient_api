@@ -8,6 +8,7 @@ import type {
   IngredientRegister,
   IngredientUpdate,
 } from "../types/ingredients.js";
+import { ValidationError } from "../utils/errors.js";
 
 const create = async (ingredientData: IngredientRegister) => {
   if (
@@ -17,7 +18,9 @@ const create = async (ingredientData: IngredientRegister) => {
     ingredientData.amount == null ||
     !ingredientData.userId
   )
-    throw new Error("Name, price, unit, amount, and userId are required");
+    throw new ValidationError(
+      "Name, price, unit, amount, and userId are required"
+    );
   const ingredient = await createIngredient(
     ingredientData.name,
     ingredientData.price,
@@ -38,14 +41,14 @@ const update = async (
   ingredientId: string,
   ingredientData: IngredientUpdate
 ) => {
-  if (!ingredientId) throw new Error("No ingredient id");
+  if (!ingredientId) throw new ValidationError("No ingredient id");
   if (
     !ingredientData.name ||
     ingredientData.price == null ||
     !ingredientData.unit ||
     ingredientData.amount == null
   )
-    throw new Error(
+    throw new ValidationError(
       "Ingredient id, name, price, unit, and amount are required"
     );
   const updateIngredientData = {
@@ -63,7 +66,7 @@ const update = async (
 };
 
 const remove = async (userId: string, ingredientId: string | undefined) => {
-  if (!ingredientId) throw new Error("No ingredient id");
+  if (!ingredientId) throw new ValidationError("No ingredient id");
   const ingredient = await deleteIngredient(userId, ingredientId);
   return ingredient;
 };

@@ -6,6 +6,7 @@ import {
   updateRecipe,
 } from "../repositories/recipe.repositories.js";
 import type { RecipeRegister, RecipeUpdate } from "../types/recipe.js";
+import { ValidationError } from "../utils/errors.js";
 
 const create = async (recipeData: RecipeRegister) => {
   if (
@@ -14,7 +15,9 @@ const create = async (recipeData: RecipeRegister) => {
     !recipeData.userId ||
     !recipeData.ingredients
   )
-    throw new Error("Name, description, userId, and ingredients are required");
+    throw new ValidationError(
+      "Name, description, userId, and ingredients are required"
+    );
   return await createRecipe(
     recipeData.name,
     recipeData.description,
@@ -33,12 +36,13 @@ const getOne = async (userId: string, recipeId: string) => {
 
 const update = async (userId: string, recipeId: string, data: RecipeUpdate) => {
   if (!userId || !recipeId || !data)
-    throw new Error("userId, recipeId, and data are required");
+    throw new ValidationError("userId, recipeId, and data are required");
   return await updateRecipe(userId, recipeId, data);
 };
 
 const remove = async (userId: string, recipeId: string) => {
-  if (!userId || !recipeId) throw new Error("userId and recipeId are required");
+  if (!userId || !recipeId)
+    throw new ValidationError("userId and recipeId are required");
   return await deleteRecipe(userId, recipeId);
 };
 

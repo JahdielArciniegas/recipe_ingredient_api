@@ -1,15 +1,24 @@
-const createErrorFactory = function (name: string) {
-  return class BusinessError extends Error {
-    constructor(message: string) {
-      super(message);
-      this.name = name;
-    }
-  };
-};
+import type { NextFunction, Request, Response } from "express";
 
-export const BadRequestError = createErrorFactory("BadRequestError");
-export const ValidationError = createErrorFactory("ValidationError");
-export const NotFoundError = createErrorFactory("NotFoundError");
-export const UnauthorizedError = createErrorFactory("UnauthorizedError");
-export const ForbiddenError = createErrorFactory("ForbiddenError");
-export const InternalServerError = createErrorFactory("InternalServerError");
+export default function handleError(
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (err.name === "ValidationError") {
+    return res.status(400).json({ message: err.message });
+  }
+  if (err.name === "UnauthorizedError") {
+    return res.status(401).json({ message: err.message });
+  }
+  if (err.name === "ForbiddenError") {
+    return res.status(403).json({ message: err.message });
+  }
+  if (err.name === "NotFoundError") {
+    return res.status(404).json({ message: err.message });
+  }
+  if (err.name === "InternalServerError") {
+    return res.status(500).json({ message: err.message });
+  }
+}

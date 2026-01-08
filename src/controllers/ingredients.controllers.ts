@@ -1,7 +1,6 @@
 import type { NextFunction, Response } from "express";
 import type { AuthRequest } from "../types/express";
 import { ingredientService } from "../services/ingredients.js";
-import { InternalServerError } from "../middlewares/handleError.js";
 
 const createRecipe = async (
   req: AuthRequest,
@@ -21,9 +20,7 @@ const createRecipe = async (
     });
     res.status(201).json(recipe);
   } catch (error) {
-    next(
-      new InternalServerError("Internal server error, No ingredient created")
-    );
+    next(error);
   }
 };
 
@@ -38,9 +35,7 @@ const getAllIngredients = async (
     const ingredients = await ingredientService.getAll(user.id);
     res.status(200).json(ingredients);
   } catch (error) {
-    next(
-      new InternalServerError("Internal server error, No ingredients found")
-    );
+    next(error);
   }
 };
 
@@ -63,9 +58,7 @@ const updateIngredient = async (
     });
     res.status(200).json(ingredient);
   } catch (error) {
-    next(
-      new InternalServerError("Internal server error, No ingredient updated")
-    );
+    next(error);
   }
 };
 
@@ -81,9 +74,7 @@ const deleteIngredient = async (
     const ingredient = await ingredientService.remove(user.id, id);
     res.status(200).json(ingredient);
   } catch (error) {
-    next(
-      new InternalServerError("Internal server error, No ingredient deleted")
-    );
+    next(error);
   }
 };
 

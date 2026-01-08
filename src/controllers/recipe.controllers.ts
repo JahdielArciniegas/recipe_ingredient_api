@@ -1,7 +1,6 @@
 import type { NextFunction, Response } from "express";
 import type { AuthRequest } from "../types/express";
 import { recipeService } from "../services/recipes.js";
-import { InternalServerError } from "../middlewares/handleError.js";
 
 const createRecipe = async (
   req: AuthRequest,
@@ -21,7 +20,7 @@ const createRecipe = async (
     });
     res.status(201).json(recipe);
   } catch (error) {
-    next(new InternalServerError("Internal server error, No recipe created"));
+    next(error);
   }
 };
 
@@ -38,7 +37,7 @@ const getRecipe = async (
     const recipe = await recipeService.getOne(user.id, id);
     res.status(200).json(recipe);
   } catch (error) {
-    next(new InternalServerError("Internal server error, No recipe found"));
+    next(error);
   }
 };
 
@@ -53,7 +52,7 @@ const getRecipes = async (
     const recipes = await recipeService.get(user.id);
     res.status(200).json(recipes);
   } catch (error) {
-    next(new InternalServerError("Internal server error, No recipes found"));
+    next(error);
   }
 };
 
@@ -76,7 +75,7 @@ const updateRecipe = async (
     });
     res.status(200).json(recipe);
   } catch (error) {
-    next(new InternalServerError("Internal server error, No recipe updated"));
+    next(error);
   }
 };
 
@@ -93,7 +92,7 @@ const deleteRecipe = async (
     const recipe = await recipeService.remove(user.id, id);
     res.status(200).json(recipe);
   } catch (error) {
-    next(new InternalServerError("Internal server error, No recipe deleted"));
+    next(error);
   }
 };
 
