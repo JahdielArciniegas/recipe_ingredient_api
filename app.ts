@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import viewRouter from "./src/routes/view.routes.js";
 import rateLimit from "./src/middlewares/rateLimit.js";
 import swaggerUi from "swagger-ui-express";
+import handleError from "./src/middlewares/handleError.js";
 const { default: swaggerDocument } = await import("./swagger.json", {
   with: {
     type: "json",
@@ -24,6 +25,7 @@ app.use("/", viewRouter);
 app.use("/auth", authRouter);
 app.use("/ingredients", ingredientRouter);
 app.use("/recipes", recipeRouter);
+app.use("/error", handleError);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 export default app;

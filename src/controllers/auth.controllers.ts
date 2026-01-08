@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
 import { authService } from "../services/auth.js";
-import { InternalServerError } from "../middlewares/handleError.js";
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
@@ -14,7 +13,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       .status(200)
       .json({ newUser });
   } catch (error) {
-    next(new InternalServerError("Internal server error, No user logged in"));
+    next(error);
   }
 };
 
@@ -24,7 +23,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     const user = await authService.register({ username, email, password });
     res.status(201).json(user);
   } catch (error) {
-    next(new InternalServerError("Internal server error, No user registered"));
+    next(error);
   }
 };
 
@@ -33,7 +32,7 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
     res.clearCookie("accessToken");
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
-    next(new InternalServerError("Internal server error, No user logged out"));
+    next(error);
   }
 };
 
