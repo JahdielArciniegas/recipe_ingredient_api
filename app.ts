@@ -8,6 +8,7 @@ import viewRouter from "./src/routes/view.routes.js";
 import rateLimit from "./src/middlewares/rateLimit.js";
 import swaggerUi from "swagger-ui-express";
 import handleError from "./src/middlewares/handleError.js";
+import { verifyToken } from "./src/middlewares/verifyToken.js";
 const { default: swaggerDocument } = await import("./swagger.json", {
   with: {
     type: "json",
@@ -20,6 +21,7 @@ app.use(cookieParser());
 app.use(cors());
 app.use(rateLimit);
 app.use(express.json());
+app.use(verifyToken);
 app.set("view engine", "ejs");
 app.use("/", viewRouter);
 app.use("/auth", authRouter);
