@@ -1,11 +1,7 @@
 import type { NextFunction, Response, Request } from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/dotenv.js";
-import {
-  ForbiddenError,
-  InternalServerError,
-  UnauthorizedError,
-} from "../utils/errors.js";
+import { InternalServerError } from "../utils/errors.js";
 
 export const verifyToken = (
   req: Request,
@@ -14,16 +10,15 @@ export const verifyToken = (
 ) => {
   try {
     const token = req.cookies.accessToken;
-    if (!token) throw new UnauthorizedError("Unauthorized");
+    if (!token) {
+      req.user = null;
+      return next();
+    }
 
     if (!JWT_SECRET) throw new InternalServerError("Internal Server Error");
 
-    jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
-      if (err) throw new ForbiddenError("Forbidden");
-      req.user = user;
-      next();
-    });
-  } catch (error) {
-    next(error);
-  }
+    jwt.verify(token, JWT_SECRET);
+  } catch {}
+
+  next();
 };
