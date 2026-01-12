@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { ingredientController } from "../controllers/ingredients.controllers.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
-import { authToken } from "../middlewares/authToken.js";
 import { validate } from "../middlewares/validateData.js";
 import { ingredientSchema } from "../models/ingredientSchema.js";
 const ingredientRouter = Router();
@@ -11,7 +10,7 @@ ingredientRouter.post(
   validate(ingredientSchema),
   ingredientController.createRecipe
 );
-ingredientRouter.get("/", authToken, ingredientController.getAllIngredients);
+ingredientRouter.get("/", ingredientController.getAllIngredients);
 ingredientRouter.put(
   "/:id",
   verifyToken,
