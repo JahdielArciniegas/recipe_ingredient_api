@@ -1,9 +1,8 @@
-import type { NextFunction, Response } from "express";
-import type { AuthRequest } from "../types/express";
+import type { NextFunction, Response, Request } from "express";
 import { ingredientService } from "../services/ingredients.js";
 
 const createRecipe = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -25,7 +24,7 @@ const createRecipe = async (
 };
 
 const getAllIngredients = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -40,7 +39,7 @@ const getAllIngredients = async (
 };
 
 const updateIngredient = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -63,7 +62,7 @@ const updateIngredient = async (
 };
 
 const deleteIngredient = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {

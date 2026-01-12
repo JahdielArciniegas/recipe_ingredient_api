@@ -1,9 +1,8 @@
-import type { NextFunction, Response } from "express";
-import type { AuthRequest } from "../types/express";
+import type { NextFunction, Response, Request } from "express";
 import { recipeService } from "../services/recipes.js";
 
 const createRecipe = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -24,11 +23,7 @@ const createRecipe = async (
   }
 };
 
-const getRecipe = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
+const getRecipe = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     if (!id) throw new Error("Recipe ID is required");
@@ -41,11 +36,7 @@ const getRecipe = async (
   }
 };
 
-const getRecipes = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
+const getRecipes = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = req.user;
     if (!user) throw new Error("User is required");
@@ -57,7 +48,7 @@ const getRecipes = async (
 };
 
 const updateRecipe = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -80,7 +71,7 @@ const updateRecipe = async (
 };
 
 const deleteRecipe = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
