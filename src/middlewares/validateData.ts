@@ -3,7 +3,6 @@ import { BadRequestError } from "../utils/errors.js";
 export const validate = (schema: any) => {
   return (req: any, res: any, next: any) => {
     try {
-      console.log(req.body);
       const value = schema.parse({
         body: req.body,
       });
