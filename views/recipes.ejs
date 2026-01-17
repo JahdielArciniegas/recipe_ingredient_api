@@ -4,19 +4,163 @@
   <meta charset="UTF-8" />
   <title>Recetas</title>
   <style>
-    body { font-family: Arial; padding: 30px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    td, th { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    form { margin-bottom: 30px; }
-    button { cursor: pointer; }
-    .ing-row { margin-bottom: 10px; display: flex; gap: 10px; }
-    .ing-row select, .ing-row input { flex: 1; }
+    /* Variables para mantener los colores de la foto 1 */
+:root {
+  --primary-blue: #4a90e2; /* Azul del botón */
+  --primary-hover: #357abd;
+  --bg-color: #f0f2f5;     /* Gris de fondo */
+  --card-bg: #ffffff;      /* Blanco de las tarjetas */
+  --text-color: #333333;
+  --border-color: #dcdcdc;
+  --radius: 8px;           /* Bordes redondeados */
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+/* Navegación */
+nav {
+  margin-bottom: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--primary-blue);
+  font-weight: 600;
+  margin-right: 20px;
+  font-size: 1.1rem;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Títulos */
+h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+h2, h3 {
+  margin-top: 0;
+  color: #444;
+}
+
+/* Contenedor principal para centrar el contenido (opcional) */
+.main-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ESTILO DE TARJETA (Igual al contenedor de Login) */
+.card {
+  background-color: var(--card-bg);
+  padding: 30px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 30px; /* Espacio entre el formulario y la tabla */
+}
+
+/* Inputs y Textareas */
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-sizing: border-box; /* Para que el padding no rompa el ancho */
+  font-size: 14px;
+  background-color: #fff;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Botones */
+button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-block;
+}
+
+/* Botón Primario (Azul - como "Entrar") */
+button, .btn-primary {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+button:hover, .btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Botón Secundario (Opcional para "Agregar ingrediente") */
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--primary-blue);
+  color: var(--primary-blue);
+  margin-bottom: 15px;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(74, 144, 226, 0.1);
+}
+
+/* Estilos de la Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid var(--border-color);
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  font-weight: 700;
+  color: #555;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
   </style>
 </head>
 <body>
-
-        <a href="/">Home</a>
-      <a href="/view/ingredients">Ingredientes</a>
+<nav>
+  <a href="/">Home</a>
+  <a href="/view/ingredients">Ingredientes</a>
+</nav>
+        
 <h1>Recetas</h1>
 
 <!-- CREAR RECETA -->
