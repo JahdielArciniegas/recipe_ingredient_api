@@ -4,20 +4,131 @@
     <meta charset="UTF-8">
     <title><%= recipe.name %></title>
 </head>
+<style>
+    :root {
+            --primary-blue: #4a90e2; /* El azul de los botones */
+            --primary-hover: #357abd;
+            --bg-color: #f0f2f5;     /* El fondo gris claro */
+            --text-dark: #333333;
+            --text-label: #666666;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* --- BOTONES (Estilo "Agregar ingrediente" / "Ver") --- */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 5px; /* Bordes redondeados */
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* --- TÍTULOS --- */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #444;
+            border-bottom: 1px solid #ddd; /* Separador sutil */
+            padding-bottom: 10px;
+        }
+
+        /* --- CAMPOS DE INFORMACIÓN (Estilo limpio) --- */
+        .info-group {
+            background-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 5px;
+        }
+
+        .value {
+            color: var(--text-dark);
+        }
+
+        /* --- LISTA DE INGREDIENTES --- */
+        ul {
+            list-style-type: none; /* Quitamos los puntos por defecto */
+            padding: 0;
+        }
+
+        li {
+            background-color: var(--white); /* Fondo blanco para cada item */
+            border: 1px solid #e1e4e8;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        /* Pequeño punto decorativo estilo lista de la imagen 1 */
+        li::before {
+            content: "•";
+            color: var(--text-dark);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-right: 5px;
+        }
+
+        /* Estilo para el precio/moneda */
+        .price-tag {
+            color: #555;
+        }
+
+    </style>
 <body>
-    <a href="/view/recipes">Cerrar receta</a>
+    <a href="/view/recipes" class="btn">Cerrar receta</a>
     <h1>Receta: <%= recipe.name %></h1>
 
-    <p><strong>Descripción:</strong> <%= recipe.description %></p>
-    <p><strong>Precio:</strong> $<%= recipe.priceRecipe %></p>
+    <div class="info-group">
+        <span class="label">Descripción:</span>
+        <span class="value"><%= recipe.despanption %></span>
+    </div>
+
+    <div class="info-group">
+        <span class="label">Precio:</span>
+        <span class="value">$<%= recipe.priceRecipe %></span>
+    </div>
 
     <h2>Ingredientes usados</h2>
     <ul>
         <% recipe.ingredients.forEach(i => { %>
             <li>
-                <strong><%= i.ingredient.name %></strong> — 
-                Cantidad: <%= i.amount %> <%= i.unit %> — 
-                Precio: $<%= i.ingredient.price %>
+                <strong><%= i.ingredient.name %></strong>&nbsp; — 
+                Cantidad: <%= i.amount %> <%= i.unit %>&nbsp; — 
+                Precio: <span class="price-tag">$<%= i.ingredient.price %></span>
             </li>
         <% }) %>
     </ul>
