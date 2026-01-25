@@ -175,7 +175,6 @@ button:hover {
       });
 
       const data = await res.json();
-      console.log(data);
       document.getElementById('loginMsg').textContent = data.message;
 
       if (res.ok) {

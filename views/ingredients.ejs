@@ -346,7 +346,6 @@ th, td {
   editForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(editForm);
-    console.log(currentEditId)
     const res = await fetch(`/ingredients/${currentEditId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },

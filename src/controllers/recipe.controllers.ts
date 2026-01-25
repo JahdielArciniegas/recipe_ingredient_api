@@ -4,13 +4,12 @@ import { recipeService } from "../services/recipes.js";
 const createRecipe = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req.user) throw new Error("User is required");
     const user = req.user;
     const { name, description, ingredients } = req.body;
-    console.log(ingredients);
     const recipe = await recipeService.create({
       name,
       description,
@@ -50,7 +49,7 @@ const getRecipes = async (req: Request, res: Response, next: NextFunction) => {
 const updateRecipe = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { id } = req.params;
@@ -73,7 +72,7 @@ const updateRecipe = async (
 const deleteRecipe = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { id } = req.params;
