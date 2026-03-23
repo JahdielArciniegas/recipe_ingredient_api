@@ -1,131 +1,206 @@
+<!-- views/auth.ejs - UI/UX Mejorada -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Auth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autenticación</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Estilos generales para el fondo y la fuente */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      --radius: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-/* Contenedor de las tarjetas */
-.container {
-    display: flex;
-    gap: 40px; /* Espacio entre Registro e Iniciar Sesión */
-}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Estilo de la "tarjeta" o recuadro */
-.form-card {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e1e1e1;
-    width: 300px;
-    height: 400px;
-    margin: 2px;
-}
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text-main);
+    }
 
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-.user-card-nav {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-}
+    .container {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2rem;
+      animation: slideUp 0.6s ease-out;
+    }
 
+    .form-card {
+      background: var(--surface);
+      padding: 3rem 2.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 380px;
+      transition: var(--transition);
+      border: 1px solid rgba(255,255,255,0.5);
+      position: relative;
+      overflow: hidden;
+    }
 
-/* Títulos */
-h2 {
-    margin-top: 0;
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-}
+    .form-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
 
-.user-card-nav a {
-  text-decoration: none;
-  color: var(--text-gray);
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-/* Campos de entrada (inputs) */
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-}
+    /* Adorno superior sutil */
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), #818cf8);
+    }
 
-input:focus {
-    border-color: #4a90e2;
-    outline: none;
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.2);
-}
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--text-main);
+      text-align: center;
+      letter-spacing: -0.025em;
+    }
 
-/* Botones */
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-}
+    input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background-color: #f8fafc;
+      transition: var(--transition);
+      color: var(--text-main);
+    }
 
-button:hover {
-    background-color: #357abd;
-}
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background-color: var(--surface);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: var(--transition);
+      margin-top: 0.5rem;
+    }
+
+    button:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .user-card-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .user-card-nav a {
+      text-align: center;
+      text-decoration: none;
+      background-color: #f1f5f9;
+      color: var(--text-main);
+      padding: 0.8rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .user-card-nav a:hover {
+      background-color: #e2e8f0;
+      color: var(--primary);
+    }
+
+    p[id$="Msg"] {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #10b981;
+      font-weight: 500;
+    }
+
+    .user-info {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
 
-  <% if (user) { %>
-    <div class="form-card">
-      <nav class="user-card-nav">
-        <a href="/view/recipes" class="btn">Recetas</a>
-        <a href="/view/ingredients" class="btn">Ingredientes</a>
-      </nav>
-      
-      <h2>Usuario loggeado</h2>
-      <p>Email: <%= user.email %></p>
-      <button id="logoutBtn" class="btn">Cerrar sesión</button>
-    </div>
-  <% } else { %>
+  <div class="container">
+    <% if (user) { %>
+      <div class="form-card" style="max-width: 400px;">
+        <h2>¡Bienvenido!</h2>
+        <div class="user-info">
+          <p>Has iniciado sesión como:</p>
+          <strong style="color: var(--text-main); font-size: 1.1rem;"><%= user.email %></strong>
+        </div>
+        
+        <nav class="user-card-nav">
+          <a href="/view/recipes">Ir a Mis Recetas</a>
+          <a href="/view/ingredients">Gestionar Ingredientes</a>
+        </nav>
+        
+        <button id="logoutBtn" style="background-color: #ef4444;">Cerrar sesión</button>
+      </div>
+    <% } else { %>
 
-    <form id="registerForm" class="form-card">
-      <h2>Registro</h2>
-      <input name="username" type="text" placeholder="Username" required /><br><br>
-      <input name="email" type="email" placeholder="Email" required /><br><br>
-      <input name="password" type="password" placeholder="Password" required /><br><br>
-      <button type="submit">Registrarse</button>
-      <p id="registerMsg"></p>
-    </form>
+      <form id="registerForm" class="form-card">
+        <h2>Crear Cuenta</h2>
+        <input name="username" type="text" placeholder="Nombre de usuario" required />
+        <input name="email" type="email" placeholder="Correo electrónico" required />
+        <input name="password" type="password" placeholder="Contraseña" required />
+        <button type="submit">Registrarse</button>
+        <p id="registerMsg"></p>
+      </form>
 
-    <form id="loginForm" class="form-card">
-      <h2>Iniciar sesión</h2>
-      <input name="email" type="email" placeholder="Email" required /><br><br>
-      <input name="password" type="password" placeholder="Password" required /><br><br>
-      <button type="submit">Entrar</button>
-      <p id="loginMsg"></p>
-    </form>
+      <form id="loginForm" class="form-card">
+        <h2>Iniciar Sesión</h2>
+        <input name="email" type="email" placeholder="Correo electrónico" required />
+        <input name="password" type="password" placeholder="Contraseña" required />
+        <button type="submit">Entrar</button>
+        <p id="loginMsg"></p>
+      </form>
 
-  <% } %>
+    <% } %>
+  </div>
 
 <script>
   // ---------- REGISTRO ----------
@@ -133,26 +208,21 @@ button:hover {
   if (registerForm) {
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      const formData = new FormData(registerForm);
       const body = {
-        username: formData.get('username'),
-        email: formData.get('email'),
-        password: formData.get('password'),
+        username: registerForm.username.value,
+        email: registerForm.email.value,
+        password: registerForm.password.value,
       };
-
       const res = await fetch('/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
-
       const data = await res.json();
-      document.getElementById('registerMsg').textContent = data.message;
-
-      if (res.ok) {
-        location.reload();
-      }
+      const msgEl = document.getElementById('registerMsg');
+      msgEl.textContent = data.message;
+      msgEl.style.color = res.ok ? '#10b981' : '#ef4444';
+      if (res.ok) setTimeout(() => location.reload(), 1000);
     });
   }
 
@@ -161,25 +231,20 @@ button:hover {
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      const formData = new FormData(loginForm);
       const body = {
-        email: formData.get('email'),
-        password: formData.get('password'),
+        email: loginForm.email.value,
+        password: loginForm.password.value,
       };
-
       const res = await fetch('/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
-
       const data = await res.json();
-      document.getElementById('loginMsg').textContent = data.message;
-
-      if (res.ok) {
-          location.reload();
-      }
+      const msgEl = document.getElementById('loginMsg');
+      msgEl.textContent = data.message;
+      msgEl.style.color = res.ok ? '#10b981' : '#ef4444';
+      if (res.ok) setTimeout(() => location.reload(), 800);
     });
   }
 
@@ -192,7 +257,6 @@ button:hover {
     });
   }
 </script>
-
 </body>
 </html>
-*/
+

@@ -1,252 +1,498 @@
+<!-- Vista de Recetas Optimizada UI/UX - EJS -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Recetas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Recetas</title>
+  <!-- Importando fuente moderna Inter para mejorar la legibilidad -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Variables para mantener los colores de la foto 1 */
-:root {
-  --primary-blue: #4a90e2; /* Azul del botón */
-  --primary-hover: #357abd;
-  --bg-color: #f0f2f5;     /* Gris de fondo */
-  --card-bg: #ffffff;      /* Blanco de las tarjetas */
-  --text-color: #333333;
-  --border-color: #dcdcdc;
-  --radius: 8px;           /* Bordes redondeados */
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
-}
+    /* 
+      Variables de diseño: Sistema de colores moderno, 
+      sombras suaves (glassmorphism feeling) y curvas amigables.
+    */
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --secondary: #10b981;
+      --danger: #ef4444;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Animación fluida */
+    }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  margin: 0;
-  padding: 20px;
-  line-height: 1.6;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* Navegación */
-nav {
-  margin-bottom: 20px;
-}
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--background);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-nav a {
-  text-decoration: none;
-  color: var(--primary-blue);
-  font-weight: 600;
-  margin-right: 20px;
-  font-size: 1.1rem;
-}
+    /* Animaciones Clave para dar vida a la interfaz */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-nav a:hover {
-  text-decoration: underline;
-}
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-/* Títulos */
-h1 {
-  color: #2c3e50;
-  margin-bottom: 20px;
-}
+    /* Navegación Flotante y Estilizada */
+    nav {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px); /* Efecto cristal */
+      padding: 1.2rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 2rem;
+      animation: fadeIn 0.5s ease-out;
+    }
 
-h2, h3 {
-  margin-top: 0;
-  color: #444;
-}
+    nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: var(--transition);
+      position: relative;
+    }
 
-/* Contenedor principal para centrar el contenido (opcional) */
-.main-container {
-  max-width: 900px;
-  margin: 0 auto;
-}
+    nav a:hover {
+      color: var(--primary);
+    }
+    
+    /* Indicador animado debajo del enlace en hover */
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: var(--primary);
+      transition: var(--transition);
+    }
 
-/* ESTILO DE TARJETA (Igual al contenedor de Login) */
-.card {
-  background-color: var(--card-bg);
-  padding: 30px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  margin-bottom: 30px; /* Espacio entre el formulario y la tabla */
-}
+    nav a:hover::after {
+      width: 100%;
+    }
 
-/* Inputs y Textareas */
-input[type="text"],
-textarea {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  box-sizing: border-box; /* Para que el padding no rompa el ancho */
-  font-size: 14px;
-  background-color: #fff;
-  transition: border-color 0.3s;
-}
+    /* Contenedor Principal Centrado */
+    .container {
+      max-width: 1100px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+      width: 100%;
+      animation: fadeIn 0.6s ease-out forwards;
+    }
 
-input[type="text"]:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--primary-blue);
-}
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--text-main);
+      letter-spacing: -0.025em;
+    }
 
-textarea {
-  min-height: 100px;
-  resize: vertical;
-}
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
 
-/* Botones */
-button {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: inline-block;
-}
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 1.5rem 0 1rem;
+      color: var(--text-muted);
+    }
 
-/* Botón Primario (Azul - como "Entrar") */
-button, .btn-primary {
-  background-color: var(--primary-blue);
-  color: white;
-}
+    /* Tarjetas de Formularios Interactivas */
+    .card-form {
+      background: var(--surface);
+      padding: 2.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 3.5rem;
+      transition: var(--transition);
+      border: 1px solid var(--border);
+    }
 
-button:hover, .btn-primary:hover {
-  background-color: var(--primary-hover);
-}
+    .card-form:hover {
+      box-shadow: var(--shadow-lg);
+    }
 
-/* Botón Secundario (Opcional para "Agregar ingrediente") */
-.btn-secondary {
-  background-color: transparent;
-  border: 1px solid var(--primary-blue);
-  color: var(--primary-blue);
-  margin-bottom: 15px;
-}
+    /* Inputs y Textareas Premium */
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background-color: #f8fafc;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      color: var(--text-main);
+    }
 
-.btn-secondary:hover {
-  background-color: rgba(74, 144, 226, 0.1);
-}
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background-color: var(--surface);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); /* Halos de foco */
+    }
 
-/* Estilos de la Tabla */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
 
-thead {
-  background-color: #f8f9fa;
-  border-bottom: 2px solid var(--border-color);
-}
+    /* Fila de ingredientes con flexbox para alinear perfectamente */
+    .ing-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      animation: scaleIn 0.3s ease-out; /* Animación al agregar ingrediente */
+    }
 
-th, td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
+    .ing-row > * {
+      margin-bottom: 0 !important;
+    }
 
-th {
-  font-weight: 700;
-  color: #555;
-}
+    .ing-id { flex: 2; }
+    .ing-amount { flex: 1; }
+    .ing-unit { flex: 1; }
+    .ing-price { flex: 1; } /* Añadido si es necesario para el form, según el JS */
 
-tr:last-child td {
-  border-bottom: none;
-}
+    /* Botones Modernos y Dinámicos */
+    button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+
+    /* Botón Primario */
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      margin-top: 1rem;
+      box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(79, 70, 229, 0.35);
+    }
+
+    /* Botón Dashed para agregar elementos (estilo UI amigable) */
+    .btn-dashed {
+      background-color: transparent;
+      color: var(--primary);
+      border: 2px dashed var(--primary);
+      width: 100%;
+      padding: 1rem;
+    }
+
+    .btn-dashed:hover {
+      background-color: rgba(79, 70, 229, 0.05);
+      border-style: solid;
+    }
+
+    /* Contenedor de la Tabla Estilizado */
+    .table-container {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      overflow-x: auto;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f8fafc;
+      padding: 1.2rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--border);
+    }
+
+    td {
+      padding: 1.5rem;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    tr {
+      transition: var(--transition);
+    }
+
+    /* Hover interactivo en las filas de la tabla */
+    tbody tr:hover {
+      background-color: #f1f5f9;
+      transform: scale(1.002);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Listas dentro de la tabla */
+    ul {
+      list-style-type: disc;
+      list-style-position: inside;
+      padding: 0;
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    li {
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    /* Mixin de botones de acción en la tabla */
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .viewBtn, .editBtn, .deleteBtn {
+      padding: 0.6rem 1rem;
+      font-size: 0.85rem;
+      border-radius: 6px;
+    }
+
+    .viewBtn {
+      background-color: #f1f5f9;
+      color: var(--text-main);
+    }
+    .viewBtn:hover { background-color: #e2e8f0; }
+
+    .editBtn {
+      background-color: #ecfdf5;
+      color: var(--secondary);
+    }
+    .editBtn:hover { background-color: #d1fae5; }
+
+    .deleteBtn {
+      background-color: #fef2f2;
+      color: var(--danger);
+    }
+    .deleteBtn:hover { background-color: #fee2e2; }
+
+    /* Estilos del Modal con desenfoque de fondo */
+    #editModal {
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      background: var(--surface);
+      padding: 2.5rem;
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 550px;
+      box-shadow: var(--shadow-lg);
+      /* Animación de entrada con un leve rebote */
+      animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .btn-close {
+      background-color: transparent;
+      color: var(--text-muted);
+      width: 100%;
+      margin-top: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .btn-close:hover {
+      background-color: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    /* Mensajes de feedback */
+    p[id$="Msg"] {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--secondary);
+    }
+
+    /* Adaptabilidad a dispositivos móviles */
+    @media (max-width: 768px) {
+      .ing-row {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .card-form {
+        padding: 1.5rem;
+      }
+      td, th {
+        padding: 1rem;
+      }
+      .actions {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
+
+<!-- Navegación Intuitiva -->
 <nav>
   <a href="/">Home</a>
   <a href="/view/ingredients">Ingredientes</a>
 </nav>
-        
-<h1>Recetas</h1>
 
-<!-- CREAR RECETA -->
-<form id="createRecipeForm">
-  <h2>Crear receta</h2>
+<div class="container">
+  <h1>Recetas</h1>
 
-  <input name="name" type="text" placeholder="Nombre" required />
-  <textarea name="description" placeholder="Descripción" required></textarea>
+  <!-- SECCIÓN CREAR RECETA -->
+  <form id="createRecipeForm" class="card-form">
+    <h2>Crear nueva receta</h2>
 
-  <h3>Ingredientes</h3>
+    <input name="name" type="text" placeholder="Nombre de la receta" required />
+    <textarea name="description" placeholder="Describe los pasos y detalles..." required></textarea>
 
-  <div id="createIngredientsContainer"></div>
-  <button type="button" id="addIngBtn">Agregar ingrediente</button>
+    <h3>Ingredientes</h3>
+    
+    <!-- Contenedor dinámico de ingredientes -->
+    <div id="createIngredientsContainer"></div>
+    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+      <button type="button" id="addIngBtn" class="btn-dashed" style="flex: 1; margin: 0;">+ Agregar ingrediente</button>
+      <button type="button" class="btn-dashed" onclick="resetIngredientRow()" style="flex: 1; margin: 0; color: var(--danger); border-color: rgba(239, 68, 68, 0.4);">
+        Resetear ingredientes
+      </button>
+    </div>
 
-  <br><br>
-  <button type="submit">Crear receta</button>
-  <p id="createMsg"></p>
-</form>
+    <button type="submit" class="btn-primary">Crear receta</button>
+    <p id="createMsg"></p>
+  </form>
 
-<!-- LISTADO DE RECETAS -->
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Ingredientes</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
+  <!-- SECCIÓN LISTADO DE RECETAS -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Ingredientes</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
 
-  <% if (recipes.length === 0) { %>
-    <tr>
-      <td colspan="5">No hay recetas</td>
-    </tr>
-  <% } else { %>
-    <tbody id="recipesTable">
-      <% recipes.forEach(r => { %>
-        <tr data-id="<%= r.id %>">
-          <td><%= r.name %></td>
-          <td><%= r.description %></td>
-          <td>
-            <ul>
-              <% r.ingredients.forEach(i => { %>
-                <li>
-                  <%= i.ingredient.name %> — <%= i.amount %><%= i.unit %> ($<%= i.price %>)
-                </li>
-              <% }) %>
-            </ul>
-          </td>
-          <td>
-            <button class="viewBtn">Ver</button>
-            <button class="editBtn">Editar</button>
-            <button class="deleteBtn">Eliminar</button>
+      <% if (recipes.length === 0) { %>
+        <tr>
+          <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 3rem;">
+            No hay recetas creadas aún. ¡Anímate a agregar la primera!
           </td>
         </tr>
-      <% }) %>
-    </tbody>
-  <% } %>
-</table>
+      <% } else { %>
+        <tbody id="recipesTable">
+          <% recipes.forEach(r => { %>
+            <tr data-id="<%= r.id %>">
+              <td style="font-weight: 500;"><%= r.name %></td>
+              <td><%= r.description %></td>
+              <td>
+                <ul>
+                  <% r.ingredients.forEach(i => { %>
+                    <li>
+                      <strong><%= i.ingredient.name %></strong> — <%= i.amount %><%= i.unit %> 
+                      <em>($<%= i.price %>)</em>
+                    </li>
+                  <% }) %>
+                </ul>
+              </td>
+              <td class="actions">
+                <button class="viewBtn">Ver</button>
+                <button class="editBtn">Editar</button>
+                <button class="deleteBtn">Eliminar</button>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      <% } %>
+    </table>
+  </div>
+</div>
 
-
-<!-- MODAL EDITAR RECETA -->
+<!-- MODAL EDITAR RECETA MEJORADO -->
 <div id="editModal" style="
   display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-  background:#0007; justify-content:center; align-items:center;">
+  background:rgba(15, 23, 42, 0.6); align-items:center; justify-content:center;">
   
-  <div style="background:white; padding:20px; width:400px;">
+  <div class="modal-content">
     <h2>Editar receta</h2>
 
-    <form id="editRecipeForm">
-      <input id="editName" type="text" placeholder="Nombre" required />
+    <form id="editRecipeForm" style="box-shadow: none; padding: 0; border: none; margin-bottom: 0;">
+      <input id="editName" type="text" placeholder="Nombre de la receta" required />
       <textarea id="editDescription" placeholder="Descripción" required></textarea>
 
       <h3>Ingredientes</h3>
       <div id="editIngredientsContainer"></div>
-      <button type="button" id="editAddIngBtn">Agregar ingrediente</button>
+      <button type="button" id="editAddIngBtn" class="btn-dashed">+ Agregar ingrediente</button>
 
-      <br><br>
-      <button type="submit">Guardar</button>
+      <button type="submit" class="btn-primary">Guardar Cambios</button>
     </form>
 
-    <button id="closeModal">Cerrar</button>
+    <button id="closeModal" class="btn-close">Cerrar</button>
     <p id="editMsg"></p>
   </div>
 </div>
 
+<!-- Scripts (Mantenemos la Lógica Intacta) -->
 <script>
   const ING_LIST = <%- JSON.stringify(ingredients) %>;
   let currentEditId = null;
@@ -256,7 +502,7 @@ tr:last-child td {
   // --------------------------
   function ingredientRow(data = {}) {
     return `
-      <div class="ing-row">
+      <div class="ing-row" id="${data.id}">
         <select class="ing-id">
           ${ING_LIST.map(i =>
             `<option value="${i.id}" ${data.id === i.id ? "selected" : ""}>${i.name}</option>`
@@ -264,8 +510,19 @@ tr:last-child td {
         </select>
         <input class="ing-amount" type="number" step="0.01" placeholder="Cantidad" value="${data.amount || ""}">
         <input class="ing-unit" type="text" placeholder="Unidad" value="${data.unit || ""}">
+        <input class="ing-price" type="number" step="0.01" placeholder="Precio ($)" value="${data.price || ""}" style="display:none;">
+        <button type="button" class="btn-delete" onclick="ingredientRowDelete('${data.id}')">Eliminar</button>
       </div>
     `;
+  }
+
+  function ingredientRowDelete(id){
+    const ingRow = document.getElementById(id);
+    ingRow.remove();
+  }
+
+  function resetIngredientRow(){
+    document.getElementById("createIngredientsContainer").innerHTML = "";
   }
 
   // --------------------------
@@ -309,11 +566,12 @@ tr:last-child td {
   // --------------------------
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.onclick = async (e) => {
-      const tr = e.target.closest("tr");
-      const id = tr.dataset.id;
-
-      const res = await fetch(`/recipes/${id}`, { method: "DELETE" });
-      if (res.ok) location.reload();
+      if(confirm('¿Estás seguro de que deseas eliminar esta receta?')) {
+        const tr = e.target.closest("tr");
+        const id = tr.dataset.id;
+        const res = await fetch(`/recipes/${id}`, { method: "DELETE" });
+        if (res.ok) location.reload();
+      }
     };
   });
 
@@ -346,7 +604,7 @@ tr:last-child td {
       const container = document.getElementById("editIngredientsContainer");
       container.innerHTML = "";
 
-      // Buscar receta completa en el dataset generado por la vista
+      // Buscar receta completa
       const recipe = <%- JSON.stringify(recipes) %>.find(r => r.id === currentEditId);
 
       recipe.ingredients.forEach(i => {
@@ -362,7 +620,8 @@ tr:last-child td {
     };
   });
 
-  document.getElementById("closeModal").onclick = () => {
+  document.getElementById("closeModal").onclick = (e) => {
+    e.preventDefault();
     document.getElementById("editModal").style.display = "none";
   };
 
@@ -376,7 +635,7 @@ tr:last-child td {
     const ingredients = ingRows.map(r => ({
       id: r.querySelector(".ing-id").value,
       amount: Number(r.querySelector(".ing-amount").value),
-      price: Number(r.querySelector(".ing-price").value),
+      price: Number(r.querySelector(".ing-price")?.value || 0),
       unit: r.querySelector(".ing-unit").value
     }));
 
@@ -399,3 +658,4 @@ tr:last-child td {
 
 </body>
 </html>
+

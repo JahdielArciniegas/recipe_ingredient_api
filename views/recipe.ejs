@@ -1,144 +1,137 @@
+<!-- views/recipe.ejs - UI/UX Mejorada -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title><%= recipe.name %></title>
-</head>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= recipe.name %> | Detalles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
     :root {
-            --primary-blue: #4a90e2; /* El azul de los botones */
-            --primary-hover: #357abd;
-            --bg-color: #f0f2f5;     /* El fondo gris claro */
-            --text-dark: #333333;
-            --text-label: #666666;
-            --white: #ffffff;
-        }
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+      --radius: 16px;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
-        /* --- BOTONES (Estilo "Agregar ingrediente" / "Ver") --- */
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 10px 20px;
-            border-radius: 5px; /* Bordes redondeados */
-            text-decoration: none;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
-            margin-bottom: 20px;
-        }
+    body {
+      background-color: var(--background);
+      color: var(--text-main);
+      padding: 3rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
 
-        .btn:hover {
-            background-color: var(--primary-hover);
-        }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        /* --- TÍTULOS --- */
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #444;
-        }
+    .recipe-card {
+      background: var(--surface);
+      width: 100%;
+      max-width: 600px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      animation: slideIn 0.5s ease-out;
+      position: relative;
+    }
 
-        h2 {
-            font-size: 18px;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            color: #444;
-            border-bottom: 1px solid #ddd; /* Separador sutil */
-            padding-bottom: 10px;
-        }
+    /* Cinta decorativa */
+    .recipe-card::after {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+      background: linear-gradient(90deg, var(--primary), #818cf8);
+      border-top-left-radius: var(--radius); border-top-right-radius: var(--radius);
+    }
 
-        /* --- CAMPOS DE INFORMACIÓN (Estilo limpio) --- */
-        .info-group {
-            background-color: transparent;
-            margin-bottom: 15px;
-        }
+    .nav-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      color: var(--text-muted); text-decoration: none; font-weight: 500;
+      margin-bottom: 2rem; transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--primary); }
 
-        .label {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-right: 5px;
-        }
+    h1 { font-size: 2rem; font-weight: 700; color: var(--text-main); margin-bottom: 1.5rem; }
 
-        .value {
-            color: var(--text-dark);
-        }
+    .meta-box {
+      background: #f1f5f9; padding: 1.2rem; border-radius: 12px; margin-bottom: 2rem;
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
 
-        /* --- LISTA DE INGREDIENTES --- */
-        ul {
-            list-style-type: none; /* Quitamos los puntos por defecto */
-            padding: 0;
-        }
+    .info-group { display: flex; align-items: flex-start; gap: 0.8rem; }
+    
+    .label { font-weight: 600; color: var(--text-muted); min-width: 90px; }
+    .value { color: var(--text-main); line-height: 1.5; }
 
-        li {
-            background-color: var(--white); /* Fondo blanco para cada item */
-            border: 1px solid #e1e4e8;
-            padding: 10px 15px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-        }
+    .price-highlight {
+      font-size: 1.2rem; font-weight: 700; color: #10b981;
+      background: #d1fae5; padding: 4px 10px; border-radius: 8px;
+    }
 
-        /* Pequeño punto decorativo estilo lista de la imagen 1 */
-        li::before {
-            content: "•";
-            color: var(--text-dark);
-            font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-right: 5px;
-        }
+    h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.2rem; color: var(--text-main); border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
 
-        /* Estilo para el precio/moneda */
-        .price-tag {
-            color: #555;
-        }
+    ul { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
 
-    </style>
+    li {
+      background: #fff; border: 1px solid var(--border); padding: 1rem;
+      border-radius: 10px; display: flex; justify-content: space-between;
+      align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.02); transition: transform 0.2s;
+    }
+    li:hover { transform: translateX(4px); border-color: #cbd5e1; }
+
+    .ing-name { font-weight: 600; color: var(--text-main); display: block; margin-bottom: 0.2rem; }
+    .ing-amount { color: var(--text-muted); font-size: 0.9rem; }
+    .ing-price { font-weight: 600; color: var(--text-muted); }
+
+  </style>
+</head>
 <body>
-    <a href="/view/recipes" class="btn">Cerrar receta</a>
-    <h1>Receta: <%= recipe.name %></h1>
 
-    <div class="info-group">
+  <div class="recipe-card">
+    <a href="/view/recipes" class="nav-link">
+      <span>← Volver a recetas</span>
+    </a>
+
+    <h1><%= recipe.name %></h1>
+
+    <div class="meta-box">
+      <div class="info-group">
         <span class="label">Descripción:</span>
-        <span class="value"><%= recipe.despanption %></span>
+        <span class="value"><%= recipe.description %></span>
+      </div>
+      <div class="info-group" style="align-items: center; margin-top: 0.5rem;">
+        <span class="label">Costo Total:</span>
+        <span class="value price-highlight">$<%= recipe.priceRecipe.toFixed(2) %></span>
+      </div>
     </div>
 
-    <div class="info-group">
-        <span class="label">Precio:</span>
-        <span class="value">$<%= recipe.priceRecipe %></span>
-    </div>
-
-    <h2>Ingredientes usados</h2>
+    <h2>Ingredientes Requeridos</h2>
     <ul>
-        <% recipe.ingredients.forEach(i => { %>
-            <li>
-                <strong><%= i.ingredient.name %></strong>&nbsp; — 
-                Cantidad: <%= i.amount %> <%= i.unit %>&nbsp; — 
-                Precio: <span class="price-tag">$<%= i.ingredient.price %></span>
-            </li>
-        <% }) %>
+      <% recipe.ingredients.forEach(i => { %>
+        <li>
+          <div>
+            <span class="ing-name"><%= i.ingredient.name %></span>
+            <span class="ing-amount"><%= i.amount %> <%= i.unit %></span>
+          </div>
+          <div class="ing-price">
+            $<%= i.ingredient.price %>
+          </div>
+        </li>
+      <% }) %>
     </ul>
-
-    <hr>
-
-    <!-- FORMULARIO PARA EDITAR LA RECETA -->
-
-    <!-- ELIMINAR RECETA -->
-    </script>
+  </div>
 
 </body>
 </html>
+
