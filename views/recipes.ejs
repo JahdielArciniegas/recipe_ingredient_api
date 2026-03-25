@@ -533,6 +533,11 @@
       .insertAdjacentHTML("beforeend", ingredientRow());
   };
 
+  document.getElementById("editAddIngBtn").onclick = () => {
+    document.getElementById("editIngredientsContainer")
+      .insertAdjacentHTML("beforeend", ingredientRow());
+  };
+
   document.getElementById("createRecipeForm").onsubmit = async (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
