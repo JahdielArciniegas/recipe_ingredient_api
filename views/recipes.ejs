@@ -522,7 +522,10 @@
   }
 
   function resetIngredientRow(){
-    document.getElementById("createIngredientsContainer").innerHTML = "";
+    const confirm = window.confirm('¿Estás seguro de que deseas resetear los ingredientes?');
+    if(confirm) {
+      document.getElementById("createIngredientsContainer").innerHTML = "";
+    }
   }
 
   // --------------------------
@@ -571,7 +574,9 @@
   // --------------------------
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.onclick = async (e) => {
-      if(confirm('¿Estás seguro de que deseas eliminar esta receta?')) {
+      const confirm = window.confirm('¿Estás seguro de que deseas eliminar esta receta?');
+      console.log(confirm)
+      if(confirm) {
         const tr = e.target.closest("tr");
         const id = tr.dataset.id;
         const res = await fetch(`/recipes/${id}`, { method: "DELETE" });

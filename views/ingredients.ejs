@@ -221,7 +221,7 @@
   </nav>
 
   <div class="main-container">
-    <h1>Bodega de Ingredientes</h1>
+    <h1>Ingredientes</h1>
 
     <!-- CREAR INGREDIENTE -->
     <div class="card">
@@ -244,7 +244,7 @@
           <input name="price" type="number" step="0.01" placeholder="0.00" required />
         </div>
         <div class="form-group">
-          <label>Stock actual</label>
+          <label>Contenido Neto</label>
           <input name="amount" type="number" step="0.01" placeholder="Cant." required />
         </div>
         <div class="form-group button-group">
@@ -263,7 +263,7 @@
               <th>Ingrediente</th>
               <th>Precio</th>
               <th>Unidad</th>
-              <th>Stock</th>
+              <th>Contenido Neto</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -343,7 +343,7 @@
 
   document.querySelectorAll('.deleteBtn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
-      if(confirm('¿Estás seguro de que deseas eliminar este ingrediente?')) {
+      if(window.confirm('¿Estás seguro de que deseas eliminar este ingrediente?')) {
         const tr = e.target.closest('tr');
         const id = tr.getAttribute('data-id');
         const res = await fetch(`/ingredients/${id}`, { method: 'DELETE' });
