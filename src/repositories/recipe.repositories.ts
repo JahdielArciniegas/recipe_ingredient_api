@@ -97,7 +97,7 @@ export const updateRecipe = async (
   recipeId: string,
   data: RecipeUpdate
 ) => {
-  prisma.$transaction(async (tx) => {
+  const recipe = await prisma.$transaction(async (tx) => {
     const recipe = await tx.recipe.update({
       where: {
         id: recipeId,
@@ -128,4 +128,5 @@ export const updateRecipe = async (
 
     return recipe;
   });
+  return recipe
 };
