@@ -390,6 +390,8 @@
 </head>
 <body>
 
+<input type="hidden" id="ingredientsData" value="<%= JSON.stringify(ingredients) %>">
+<input type="hidden" id="recipesData" value="<%= JSON.stringify(recipes) %>">
 <!-- Navegación Intuitiva -->
 <nav>
   <a href="/">Home</a>
@@ -494,7 +496,7 @@
 
 <!-- Scripts (Mantenemos la Lógica Intacta) -->
 <script>
-  const ING_LIST = <%- JSON.stringify(ingredients) %>;
+  const ING_LIST = JSON.parse(document.getElementById('ingredientsData').value);
   let currentEditId = null;
 
   // --------------------------
@@ -615,7 +617,7 @@
       container.innerHTML = "";
 
       // Buscar receta completa
-      const recipe = <%- JSON.stringify(recipes) %>.find(r => r.id === currentEditId);
+      const recipe = JSON.parse(document.getElementById('recipesData').value).find(r => r.id === currentEditId);
 
       recipe.ingredients.forEach(i => {
         container.insertAdjacentHTML("beforeend", ingredientRow({
