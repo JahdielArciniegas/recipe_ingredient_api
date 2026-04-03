@@ -15,6 +15,14 @@ const { default: swaggerDocument } = await import("./swagger.json", {
   },
 });
 
+const options = {
+  customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+  customJs: [
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js'
+  ]
+};
+
 const app = express();
 
 app.use(cookieParser());
@@ -28,6 +36,6 @@ app.use("/auth", authRouter);
 app.use("/ingredients", ingredientRouter);
 app.use("/recipes", recipeRouter);
 app.use("/error", handleError);
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 
 export default app;
