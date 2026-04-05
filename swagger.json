@@ -1,400 +1,299 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.1",
   "info": {
     "title": "Recipe Ingredients API",
-    "description": "Una API para gestionar recetas y ingredientes",
-    "version": "0.0.1"
+    "description": "API para gestionar recetas e ingredientes de cocina de manera eficiente",
+    "contact": {
+      "email": "arciniegasjahdiel@gmail.com"
+    },
+    "version": "1.0.0"
   },
-  "host": "localhost:3000",
-  "basePath": "/",
-  "schemes": [
-    "http",
-    "https"
+  "servers": [
+    {
+      "url": "https://recipe-ingredient-api.vercel.app/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Autenticación de los usuarios"
+    },
+    {
+      "name": "ingredients",
+      "description": "Operaciones acerca de los ingredientes"
+    },
+    {
+      "name": "recipes",
+      "description": "Operaciones acerca de las recetas"
+    },
+    {
+      "name": "view",
+      "description": "Vistas generales y consultas públicas"
+    }
   ],
   "paths": {
-    "/": {
-      "get": {
-        "description": "",
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Login de un usuario",
+        "operationId": "login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/view/ingredients": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/view/recipes": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/view/recipes/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
+          "200": {
+            "description": "Login exitoso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          },
+          "401": { "description": "Credenciales inválidas" }
         }
       }
     },
     "/auth/register": {
       "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
+        "tags": ["auth"],
+        "summary": "Registro de un usuario",
+        "operationId": "register",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/User" }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
-            "description": "Created"
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
+            "description": "Usuario creado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
               }
             }
           }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
         }
       }
     },
-    "/auth/logout": {
-      "post": {
-        "description": "",
+    "/ingredients": {
+      "get": {
+        "tags": ["ingredients"],
+        "summary": "Listar todos los ingredientes",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/ingredients/": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "unit": {
-                  "example": "any"
-                },
-                "amount": {
-                  "example": "any"
+            "description": "Listado exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Ingredient" }
                 }
               }
             }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       },
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
+      "post": {
+        "tags": ["ingredients"],
+        "summary": "Crear un nuevo ingrediente",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Ingredient" }
+            }
           }
+        },
+        "responses": {
+          "201": { "description": "Ingrediente creado" },
+          "401": { "description": "No autorizado" }
         }
       }
     },
     "/ingredients/{id}": {
       "get": {
-        "description": "",
+        "tags": ["ingredients"],
+        "summary": "Obtener un ingrediente por ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Ingredient" }
+              }
+            }
           }
         }
       },
       "put": {
-        "description": "",
+        "tags": ["ingredients"],
+        "summary": "Actualizar ingrediente",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "unit": {
-                  "example": "any"
-                },
-                "amount": {
-                  "example": "any"
-                }
-              }
-            }
+            "schema": { "type": "string" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Ingredient" }
+            }
           }
+        },
+        "responses": {
+          "200": { "description": "Ingrediente actualizado" }
         }
       },
       "delete": {
-        "description": "",
+        "tags": ["ingredients"],
+        "summary": "Eliminar ingrediente",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "200": { "description": "Ingrediente eliminado" }
         }
       }
     },
-    "/recipes/": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "ingredients": {
-                  "example": "any"
+    "/recipes": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Listar todas las recetas",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Recipe" }
                 }
               }
             }
           }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
         }
       },
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
+      "post": {
+        "tags": ["recipes"],
+        "summary": "Crear una nueva receta",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Recipe" }
+            }
           }
+        },
+        "responses": {
+          "201": { "description": "Receta creada" }
         }
       }
     },
     "/recipes/{id}": {
       "get": {
-        "description": "",
+        "tags": ["recipes"],
+        "summary": "Obtener receta por ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "ingredients": {
-                  "example": "any"
-                }
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Recipe" }
               }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       },
       "delete": {
-        "description": "",
+        "tags": ["recipes"],
+        "summary": "Eliminar receta",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          "200": { "description": "Receta eliminada" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "username": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string", "writeOnly": true }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" },
+          "user": { "$ref": "#/components/schemas/User" }
+        }
+      },
+      "Ingredient": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "price": { "type": "number" },
+          "unit": { "type": "string" },
+          "amount": { "type": "number" }
+        }
+      },
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "ingredients": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Ingredient" }
           }
         }
       }
