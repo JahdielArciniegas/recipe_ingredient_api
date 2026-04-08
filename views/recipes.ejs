@@ -1,17 +1,11 @@
-<!-- Vista de Recetas Optimizada UI/UX - EJS -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestión de Recetas</title>
-  <!-- Importando fuente moderna Inter para mejorar la legibilidad -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* 
-      Variables de diseño: Sistema de colores moderno, 
-      sombras suaves (glassmorphism feeling) y curvas amigables.
-    */
     :root {
       --primary: #4f46e5;
       --primary-hover: #4338ca;
@@ -45,7 +39,6 @@
       flex-direction: column;
     }
 
-    /* Animaciones Clave para dar vida a la interfaz */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
@@ -56,10 +49,9 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    /* Navegación Flotante y Estilizada */
     nav {
       background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px); /* Efecto cristal */
+      backdrop-filter: blur(12px);
       padding: 1.2rem 2rem;
       position: sticky;
       top: 0;
@@ -83,7 +75,6 @@
       color: var(--primary);
     }
     
-    /* Indicador animado debajo del enlace en hover */
     nav a::after {
       content: '';
       position: absolute;
@@ -99,7 +90,6 @@
       width: 100%;
     }
 
-    /* Contenedor Principal Centrado */
     .container {
       max-width: 1100px;
       margin: 2.5rem auto;
@@ -129,7 +119,6 @@
       color: var(--text-muted);
     }
 
-    /* Tarjetas de Formularios Interactivas */
     .card-form {
       background: var(--surface);
       padding: 2.5rem;
@@ -144,7 +133,6 @@
       box-shadow: var(--shadow-lg);
     }
 
-    /* Inputs y Textareas Premium */
     input[type="text"],
     input[type="number"],
     select,
@@ -165,7 +153,7 @@
       outline: none;
       border-color: var(--primary);
       background-color: var(--surface);
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); /* Halos de foco */
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
     }
 
     textarea {
@@ -173,12 +161,11 @@
       resize: vertical;
     }
 
-    /* Fila de ingredientes con flexbox para alinear perfectamente */
     .ing-row {
       display: flex;
       gap: 1rem;
       margin-bottom: 1rem;
-      animation: scaleIn 0.3s ease-out; /* Animación al agregar ingrediente */
+      animation: scaleIn 0.3s ease-out;
     }
 
     .ing-row > * {
@@ -188,9 +175,8 @@
     .ing-id { flex: 2; }
     .ing-amount { flex: 1; }
     .ing-unit { flex: 1; }
-    .ing-price { flex: 1; } /* Añadido si es necesario para el form, según el JS */
+    .ing-price { flex: 1; }
 
-    /* Botones Modernos y Dinámicos */
     button {
       padding: 0.8rem 1.5rem;
       border: none;
@@ -205,7 +191,6 @@
       transition: var(--transition);
     }
 
-    /* Botón Primario */
     .btn-primary {
       background-color: var(--primary);
       color: white;
@@ -222,7 +207,6 @@
       box-shadow: 0 6px 15px rgba(79, 70, 229, 0.35);
     }
 
-    /* Botón Dashed para agregar elementos (estilo UI amigable) */
     .btn-dashed {
       background-color: transparent;
       color: var(--primary);
@@ -236,7 +220,6 @@
       border-style: solid;
     }
 
-    /* Contenedor de la Tabla Estilizado */
     .table-container {
       background: var(--surface);
       border-radius: var(--radius);
@@ -273,7 +256,6 @@
       transition: var(--transition);
     }
 
-    /* Hover interactivo en las filas de la tabla */
     tbody tr:hover {
       background-color: #f1f5f9;
       transform: scale(1.002);
@@ -283,7 +265,6 @@
       border-bottom: none;
     }
 
-    /* Listas dentro de la tabla */
     ul {
       list-style-type: disc;
       list-style-position: inside;
@@ -297,7 +278,6 @@
       font-size: 0.9rem;
     }
 
-    /* Mixin de botones de acción en la tabla */
     .actions {
       display: flex;
       gap: 0.5rem;
@@ -328,7 +308,6 @@
     }
     .deleteBtn:hover { background-color: #fee2e2; }
 
-    /* Estilos del Modal con desenfoque de fondo */
     #editModal {
       backdrop-filter: blur(5px);
       z-index: 1000;
@@ -342,7 +321,6 @@
       width: 90%;
       max-width: 550px;
       box-shadow: var(--shadow-lg);
-      /* Animación de entrada con un leve rebote */
       animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       max-height: 90vh;
       overflow-y: auto;
@@ -361,7 +339,6 @@
       color: var(--text-main);
     }
 
-    /* Mensajes de feedback */
     p[id$="Msg"] {
       text-align: center;
       margin-top: 1rem;
@@ -370,7 +347,6 @@
       color: var(--secondary);
     }
 
-    /* Adaptabilidad a dispositivos móviles */
     @media (max-width: 768px) {
       .ing-row {
         flex-direction: column;
@@ -392,7 +368,6 @@
 
 <input type="hidden" id="ingredientsData" value="<%= JSON.stringify(ingredients) %>">
 <input type="hidden" id="recipesData" value="<%= JSON.stringify(recipes) %>">
-<!-- Navegación Intuitiva -->
 <nav>
   <a href="/">Home</a>
   <a href="/view/ingredients">Ingredientes</a>
@@ -401,7 +376,6 @@
 <div class="container">
   <h1>Recetas</h1>
 
-  <!-- SECCIÓN CREAR RECETA -->
   <form id="createRecipeForm" class="card-form">
     <h2>Crear nueva receta</h2>
 
@@ -410,7 +384,6 @@
 
     <h3>Ingredientes</h3>
     
-    <!-- Contenedor dinámico de ingredientes -->
     <div id="createIngredientsContainer"></div>
     <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
       <button type="button" id="addIngBtn" class="btn-dashed" style="flex: 1; margin: 0;">+ Agregar ingrediente</button>
@@ -423,7 +396,6 @@
     <p id="createMsg"></p>
   </form>
 
-  <!-- SECCIÓN LISTADO DE RECETAS -->
   <div class="table-container">
     <table>
       <thead>
@@ -470,7 +442,6 @@
   </div>
 </div>
 
-<!-- MODAL EDITAR RECETA MEJORADO -->
 <div id="editModal" style="
   display:none; position:fixed; top:0; left:0; width:100%; height:100%;
   background:rgba(15, 23, 42, 0.6); align-items:center; justify-content:center;">
@@ -494,14 +465,10 @@
   </div>
 </div>
 
-<!-- Scripts (Mantenemos la Lógica Intacta) -->
 <script>
   const ING_LIST = JSON.parse(document.getElementById('ingredientsData').value);
   let currentEditId = null;
 
-  // --------------------------
-  // FUNCION PARA GENERAR INPUTS DE INGREDIENTES
-  // --------------------------
   function ingredientRow(data = {}) {
     return `
       <div class="ing-row" id="${data.id}">
@@ -530,9 +497,6 @@
     }
   }
 
-  // --------------------------
-  // CREAR RECETA
-  // --------------------------
   document.getElementById("addIngBtn").onclick = () => {
     document.getElementById("createIngredientsContainer")
       .insertAdjacentHTML("beforeend", ingredientRow());
@@ -571,9 +535,6 @@
     if (res.ok) location.reload();
   };
 
-  // --------------------------
-  // ELIMINAR RECETA
-  // --------------------------
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.onclick = async (e) => {
       const confirm = window.confirm('¿Estás seguro de que deseas eliminar esta receta?');
@@ -587,9 +548,6 @@
     };
   });
 
-  // --------------------------
-  // VER RECETA
-  // --------------------------
   document.querySelectorAll(".viewBtn").forEach(btn => {
     btn.onclick = (e) => {
       const tr = e.target.closest("tr");
@@ -598,9 +556,6 @@
     };
   });
 
-  // --------------------------
-  // ABRIR MODAL EDICIÓN
-  // --------------------------
   document.querySelectorAll(".editBtn").forEach(btn => {
     btn.onclick = (e) => {
       const tr = e.target.closest("tr");
@@ -612,11 +567,9 @@
       document.getElementById("editName").value = name;
       document.getElementById("editDescription").value = desc;
 
-      // Limpiar ingredientes
       const container = document.getElementById("editIngredientsContainer");
       container.innerHTML = "";
 
-      // Buscar receta completa
       const recipe = JSON.parse(document.getElementById('recipesData').value).find(r => r.id === currentEditId);
 
       recipe.ingredients.forEach(i => {
@@ -637,9 +590,6 @@
     document.getElementById("editModal").style.display = "none";
   };
 
-  // --------------------------
-  // GUARDAR EDICIÓN
-  // --------------------------
   document.getElementById("editRecipeForm").onsubmit = async (e) => {
     e.preventDefault();
 
