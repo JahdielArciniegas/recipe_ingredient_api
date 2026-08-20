@@ -4,7 +4,7 @@ import { ingredientService } from "../services/ingredients.js";
 const createRecipe = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const user = req.user;
@@ -26,7 +26,7 @@ const createRecipe = async (
 const getAllIngredients = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const user = req.user;
@@ -41,12 +41,12 @@ const getAllIngredients = async (
 const updateIngredient = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const user = req.user;
     if (!user) throw new Error("User is required");
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     if (!id) throw new Error("No ingredient id");
     const { name, price, unit, amount } = req.body;
     const ingredient = await ingredientService.update(user.id, id, {
@@ -64,12 +64,12 @@ const updateIngredient = async (
 const deleteIngredient = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const user = req.user;
     if (!user) throw new Error("User is required");
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const ingredient = await ingredientService.remove(user.id, id);
     res.status(200).json(ingredient);
   } catch (error) {
