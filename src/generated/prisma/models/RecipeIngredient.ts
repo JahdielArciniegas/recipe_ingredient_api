@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model RecipeIngredient
@@ -192,7 +192,7 @@ export type RecipeIngredientGroupByOutputType = {
   _max: RecipeIngredientMaxAggregateOutputType | null
 }
 
-type GetRecipeIngredientGroupByPayload<T extends RecipeIngredientGroupByArgs> = Prisma.PrismaPromise<
+export type GetRecipeIngredientGroupByPayload<T extends RecipeIngredientGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<RecipeIngredientGroupByOutputType, T['by']> &
       {
@@ -1294,6 +1294,11 @@ export type RecipeIngredientFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` RecipeIngredients.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of RecipeIngredients.
+   */
   distinct?: Prisma.RecipeIngredientScalarFieldEnum | Prisma.RecipeIngredientScalarFieldEnum[]
 }
 

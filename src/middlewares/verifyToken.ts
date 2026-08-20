@@ -7,7 +7,7 @@ import type { SessionUser } from "../types/session_user.js";
 export const verifyToken = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const token = req.cookies.accessToken;
   req.user = null;
@@ -16,7 +16,10 @@ export const verifyToken = (
 
     const data = jwt.verify(token, JWT_SECRET);
     req.user = data as SessionUser;
-  } catch {}
+  } catch {
+    console.log("Invalid token");
+    res.clearCookie("accessToken");
+  }
 
   next();
 };
