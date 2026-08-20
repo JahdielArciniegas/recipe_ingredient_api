@@ -24,7 +24,7 @@ const createRecipe = async (
 
 const getRecipe = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     if (!id) throw new Error("Recipe ID is required");
     const user = req.user;
     if (!user) throw new Error("User is required");
@@ -52,7 +52,7 @@ const updateRecipe = async (
   next: NextFunction,
 ) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     if (!id) throw new Error("Recipe ID is required");
 
     const user = req.user;
@@ -75,7 +75,7 @@ const deleteRecipe = async (
   next: NextFunction,
 ) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     if (!id) throw new Error("Recipe ID is required");
     const user = req.user;
     if (!user) throw new Error("User is required");
