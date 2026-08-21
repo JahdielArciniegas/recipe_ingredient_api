@@ -25,7 +25,7 @@ const options = {
 };
 
 const app: Express = express();
-
+app.set("trust proxy", 1);
 app.use(cookieParser());
 app.use(cors());
 app.use(rateLimit);

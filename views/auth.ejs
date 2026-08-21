@@ -233,6 +233,7 @@
       };
       const res = await fetch('/auth/login', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
@@ -240,7 +241,7 @@
       const msgEl = document.getElementById('loginMsg');
       msgEl.textContent = data.message;
       msgEl.style.color = res.ok ? '#10b981' : '#ef4444';
-      if (res.ok) setTimeout(() => location.reload(), 800);
+      if (res.ok) setTimeout(() => window.location.href = '/view/recipes', 500);
     });
   }
 

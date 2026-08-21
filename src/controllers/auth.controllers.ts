@@ -9,9 +9,10 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
+        path: "/",
       })
       .status(200)
-      .json({ newUser });
+      .json({ message: "Login exitoso", newUser });
   } catch (error) {
     next(error);
   }

@@ -1,7 +1,7 @@
 import type { NextFunction, Response, Request } from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/dotenv.js";
-import { InternalServerError } from "../utils/errors.js";
+import { InternalServerError, UnauthorizedError } from "../utils/errors.js";
 import type { SessionUser } from "../types/session_user.js";
 
 export const verifyToken = (
@@ -11,14 +11,15 @@ export const verifyToken = (
 ) => {
   const token = req.cookies.accessToken;
   req.user = null;
-  try {
-    if (!JWT_SECRET) throw new InternalServerError("Internal Server Error");
 
-    const data = jwt.verify(token, JWT_SECRET);
-    req.user = data as SessionUser;
-  } catch {
-    console.log("Invalid token");
-    res.clearCookie("accessToken");
+  if (token) {
+    try {
+      if (!JWT_SECRET) throw new InternalServerError("Internal Server Error");
+      const data = jwt.verify(token, JWT_SECRET);
+      req.user = data as SessionUser;
+    } catch (error) {
+      console.log("Token verification failed:", error);
+    }
   }
 
   next();
