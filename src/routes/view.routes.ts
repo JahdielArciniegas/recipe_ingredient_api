@@ -1,8 +1,8 @@
 import type { Response, Request } from "express";
-import express from "express";
+import express, { type Router } from "express";
 import { ingredientService } from "../services/ingredients.js";
 import { recipeService } from "../services/recipes.js";
-const viewRouter = express.Router();
+const viewRouter: Router = express.Router();
 
 viewRouter.get("/", (req: Request, res: Response) => {
   res.render("auth", { user: req.user });
@@ -31,7 +31,7 @@ viewRouter.get("/view/recipes/:id", async (req: Request, res: Response) => {
   if (req.user) {
     const recipe = await recipeService.getOne(
       req.user.id,
-      req.params.id as string
+      req.params.id as string,
     );
     res.render("recipe", {
       user: req.user,

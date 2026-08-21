@@ -1,25 +1,25 @@
-import { Router } from "express";
+import { Router, type Router as ExpressRouter } from "express";
 import { ingredientController } from "../controllers/ingredients.controllers.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 import { validate } from "../middlewares/validateData.js";
 import { ingredientSchema } from "../models/ingredientSchema.js";
-const ingredientRouter = Router();
+const ingredientRouter: ExpressRouter = Router();
 ingredientRouter.post(
   "/",
   verifyToken,
   validate(ingredientSchema),
-  ingredientController.createRecipe
+  ingredientController.createRecipe,
 );
 ingredientRouter.get("/", ingredientController.getAllIngredients);
 ingredientRouter.put(
   "/:id",
   verifyToken,
   validate(ingredientSchema),
-  ingredientController.updateIngredient
+  ingredientController.updateIngredient,
 );
 ingredientRouter.delete(
   "/:id",
   verifyToken,
-  ingredientController.deleteIngredient
+  ingredientController.deleteIngredient,
 );
 export default ingredientRouter;

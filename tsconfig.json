@@ -20,5 +20,12 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowImportingTsExtensions": false
-  }
+  },
+  "exclude": [
+    "dist",
+    "test/**/*",
+    "**/*.test.ts",
+    "vitest.config.ts",
+    "eslint.config.ts"
+  ]
 }

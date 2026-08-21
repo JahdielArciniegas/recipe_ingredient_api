@@ -1,9 +1,9 @@
-import { Router } from "express";
+import { Router, type Router as ExpressRouter } from "express";
 import { recipeController } from "../controllers/recipe.controllers.js";
 import { validate } from "../middlewares/validateData.js";
 import { recipeSchema } from "../models/recipeSchema.js";
 
-const recipeRouter = Router();
+const recipeRouter: ExpressRouter = Router();
 
 recipeRouter.post("/", validate(recipeSchema), recipeController.createRecipe);
 recipeRouter.get("/", recipeController.getRecipes);
